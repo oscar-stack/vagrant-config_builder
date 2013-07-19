@@ -8,4 +8,8 @@ class ConfigBuilder::Model::Provider::Virtualbox
   #   @return [Array<String>] A list of customize arguments to use upon VM instantiation.
   attr_accessor :customize
 
+  # @!attribute [rw] gui
+  #   @return [Boolean] Whether the GUI should be launched when the VM is created
+  attr_accessor :gui
+
 end
