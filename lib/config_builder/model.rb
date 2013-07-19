@@ -11,5 +11,9 @@ module ConfigBuilder
     module Provider
       require 'config_builder/model/provider/virtualbox'
     end
+
+    module Provisioner
+      require 'config_builder/model/provisioner/shell'
+    end
   end
 end
