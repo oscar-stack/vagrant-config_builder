@@ -14,6 +14,7 @@ module ConfigBuilder
 
     module Provisioner
       require 'config_builder/model/provisioner/shell'
+      require 'config_builder/model/provisioner/puppet'
     end
   end
 end
