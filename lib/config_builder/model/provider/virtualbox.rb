@@ -1,3 +1,4 @@
+# @see http://docs.vagrantup.com/v2/virtualbox/configuration.html
 class ConfigBuilder::Model::Provider::Virtualbox
 
   # @!attribute [rw] name
