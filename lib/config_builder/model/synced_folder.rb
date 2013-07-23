@@ -1,5 +1,3 @@
-require 'activemodel'
-
 # Vagrant shared folder model.
 #
 # @see http://docs.vagrantup.com/v2/synced-folders/index.html

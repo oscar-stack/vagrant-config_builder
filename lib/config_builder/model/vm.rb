@@ -1,5 +1,3 @@
-require 'activemodel'
-
 class ConfigBuilder::Model::VM
 
   # @!attribute [rw] provider
