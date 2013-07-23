@@ -11,7 +11,7 @@ module ConfigBuilder
   # (Arrays, Hashes, Numerics, Strings, etc) and instantiates a new object
   # with attributes set based on that data structure.
   #
-  # ## `#block`
+  # ## `#to_proc`
   #
   # This method takes the object attributes and generates a lambda that will
   # create a Vagrant config with the state specified by the attributes. The
@@ -22,7 +22,45 @@ module ConfigBuilder
   # If the Model delegates certain configuration to other models, the generated
   # lambda should be able to evaluate lambdas from the delegated models.
   #
-  module Model
+  # Implementing classes do not need to inherit from ConfigBuilder::Model, but
+  # it makes life easier.
+  class Model
+
+    class UnknownAttributeError < RuntimeError; end
+
+    # Deserialize a hash into a configbuilder model
+    #
+    # @param attributes [Hash] The model attributes as represented in a hash.
+    # @return [Object < ConfigBuilder::Model]
+    def self.new_from_hash(attributes)
+      obj = new()
+      obj.attributes_from_hash(attributes)
+      obj
+    end
+
+    # Populate model attributes from a hash
+    #
+    # @param attributes [Hash] The model attributes as represented in a hash.
+    # @return [void]
+    def attributes_from_hash(attributes)
+      attributes.each_pair do |attr, value|
+        setter = "#{attr}=".intern
+        if respond_to? setter
+          send(setter, value)
+        else
+          raise UnknownAttributeError, "attribute #{attr} undefined on #{self.class.inspect}"
+        end
+      end
+    end
+
+    # Generate a block based on configuration specified by the attributes
+    #
+    # @abstract
+    # @return [Proc]
+    def to_proc
+      raise NotImplementedError
+    end
+
     require 'config_builder/model/synced_folder'
     require 'config_builder/model/vm'
 
