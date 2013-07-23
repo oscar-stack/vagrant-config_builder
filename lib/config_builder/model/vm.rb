@@ -1,3 +1,4 @@
+# @see http://docs.vagrantup.com/v2/vagrantfile/machine_settings.html
 class ConfigBuilder::Model::VM
 
   # @!attribute [rw] provider
