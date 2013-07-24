@@ -20,8 +20,8 @@ class ConfigBuilder::Model::Network::ForwardedPort < ConfigBuilder::Model
   end
 
   def to_proc
-    Proc.new do |config|
-      config.network(:forwarded_port, :guest => @guest, :host => @host, :auto_correct => @auto_correct)
+    Proc.new do |vm_config|
+      vm_config.network(:forwarded_port, :guest => @guest, :host => @host, :auto_correct => @auto_correct)
     end
   end
 end

@@ -25,8 +25,8 @@ class ConfigBuilder::Model::SyncedFolder
   attr_accessor :nfs
 
   def to_proc
-    Proc.new do |config|
-      config.synced_folder(@host_path, @guest_path, folder_opts)
+    Proc.new do |vm_config|
+      vm_config.synced_folder(@host_path, @guest_path, folder_opts)
     end
   end
 

@@ -18,15 +18,15 @@ class ConfigBuilder::Model::Provider::Virtualbox < ConfigBuilder::Model
   end
 
   def to_proc
-    Proc.new do |config|
-      config.provider 'virtualbox' do |vb|
-        vb.name = @name if defined?(@name)
+    Proc.new do |vm_config|
+      vm_config.provider 'virtualbox' do |vb_config|
+        vb_config.name = @name if defined?(@name)
 
         @customize.each do |cmd|
-          vb.customize cmd
+          vb_config.customize cmd
         end
 
-        vb.gui = @gui if defined?(@gui)
+        vb_config.gui = @gui if defined?(@gui)
       end
     end
   end

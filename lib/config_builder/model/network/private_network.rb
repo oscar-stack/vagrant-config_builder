@@ -8,8 +8,8 @@ class ConfigBuilder::Model::Network::PrivateNetwork < ConfigBuilder::Model
   attr_accessor :ip
 
   def to_proc
-    Proc.new do |config|
-      config.network(:private_network, :ip => @ip)
+    Proc.new do |vm_config|
+      vm_config.network(:private_network, :ip => @ip)
     end
   end
 end
