@@ -1,5 +1,5 @@
 # @see http://docs.vagrantup.com/v2/virtualbox/configuration.html
-class ConfigBuilder::Model::Provider::Virtualbox
+class ConfigBuilder::Model::Provider::Virtualbox < ConfigBuilder::Model
 
   # @!attribute [rw] name
   #   @return [String] The name of the created VM in the Virtualbox GUI
@@ -13,4 +13,21 @@ class ConfigBuilder::Model::Provider::Virtualbox
   #   @return [Boolean] Whether the GUI should be launched when the VM is created
   attr_accessor :gui
 
+  def initialize
+    @customize = []
+  end
+
+  def to_proc
+    Proc.new do |config|
+      config.provider 'virtualbox' do |vb|
+        vb.name = @name if defined?(@name)
+
+        @customize.each do |cmd|
+          vb.customize cmd
+        end
+
+        vb.gui = @gui if defined?(@gui)
+      end
+    end
+  end
 end
