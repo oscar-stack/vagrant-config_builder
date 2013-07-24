@@ -23,4 +23,21 @@ class ConfigBuilder::Model::SyncedFolder
   # @!attribute [rw] nfs
   #   @return [Boolean] If the mount point should use NFS
   attr_accessor :nfs
+
+  def to_proc
+    Proc.new do |config|
+      config.synced_folder(@host_path, @guest_path, folder_opts)
+    end
+  end
+
+  private
+
+  def folder_opts
+    h = {}
+    h[:extra]    = @extra    if defined? @extra
+    h[:disabled] = @disabled if defined? @disabled
+    h[:nfs]      = @nfs      if defined? @nfs
+
+    h
+  end
 end
