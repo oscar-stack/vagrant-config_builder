@@ -1,5 +1,5 @@
 # @see http://docs.vagrantup.com/v2/vagrantfile/machine_settings.html
-class ConfigBuilder::Model::VM
+class ConfigBuilder::Model::VM < ConfigBuilder::Model
 
   # @!attribute [rw] provider
   #   @return [Hash<Symbol, Object>] The provider configuration for
@@ -59,4 +59,17 @@ class ConfigBuilder::Model::VM
   #        ]
   #
   attr_accessor :synced_folders
+
+  def initialize
+    @provisioners = []
+  end
+
+  def to_proc
+    Proc.new do |vm_config|
+      @provisioners.each do |hash|
+        p = ConfigBuilder::ModelCollection.provisioner.generate(hash)
+        p.call(vm_config)
+      end
+    end
+  end
 end

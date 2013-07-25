@@ -1,3 +1,5 @@
+require 'config_builder/model_collection'
+
 module ConfigBuilder
 
   # A ConfigBuilder model implements a logic-less interface to a component of
