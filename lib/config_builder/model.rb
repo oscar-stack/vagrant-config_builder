@@ -61,6 +61,15 @@ module ConfigBuilder
       raise NotImplementedError
     end
 
+    # Generate a block based on the attribute configuration and call it with
+    # the given config.
+    #
+    # @param [Vagrant.plugin('2', :config)]
+    # @return [void]
+    def call(config)
+      to_proc.call(config)
+    end
+
     require 'config_builder/model/synced_folder'
     require 'config_builder/model/vm'
 
