@@ -1,5 +1,5 @@
 # @see http://docs.vagrantup.com/v2/provisioning/puppet_agent.html
-class ConfigBUilder::Model::Provisioner::PuppetServer
+class ConfigBuilder::Model::Provisioner::PuppetServer
 
   # @!attribute [rw] puppet_server
   #   @return [String]
