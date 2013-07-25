@@ -1,3 +1,4 @@
+require 'vagrant/errors'
 require 'config_builder/model_collection'
 
 module ConfigBuilder
@@ -28,7 +29,7 @@ module ConfigBuilder
   # it makes life easier.
   class Model
 
-    class UnknownAttributeError < RuntimeError; end
+    class UnknownAttributeError < Vagrant::Errors::VagrantError; end
 
     # Deserialize a hash into a configbuilder model
     #
