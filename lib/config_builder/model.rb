@@ -9,9 +9,13 @@ module ConfigBuilder
 
     require 'config_builder/model/base'
 
-    require 'config_builder/model/synced_folder'
-    require 'config_builder/model/vm'
+    require 'config_builder/model/root'
+
     require 'config_builder/model/ssh'
+    #require 'config_builder/model/host'
+
+    require 'config_builder/model/vm'
+    require 'config_builder/model/synced_folder'
 
     module Network
       require 'config_builder/model/network/forwarded_port'
