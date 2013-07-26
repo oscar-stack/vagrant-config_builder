@@ -61,13 +61,21 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model
   attr_accessor :synced_folders
 
   def initialize
-    @provisioners = []
+    @provisioners     = []
+    @forwarded_ports  = []
+    @private_networks = []
+    @synced_folders   = []
   end
 
   def to_proc
     Proc.new do |vm_config|
       @provisioners.each do |hash|
         p = ConfigBuilder::ModelCollection.provisioner.generate(hash)
+        p.call(vm_config)
+      end
+
+      if defined? @provider
+        p = ConfigBuilder::ModelCollection.provider.generate(@provider)
         p.call(vm_config)
       end
     end
