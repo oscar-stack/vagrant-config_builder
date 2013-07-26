@@ -78,35 +78,56 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   def to_proc
     Proc.new do |global_config|
       global_config.vm.define @name do |config|
-        vm_config = config.vm
+        vm_config = config
 
-        @provisioners.each do |hash|
-          p = ConfigBuilder::ModelCollection.provisioner.generate(hash)
-          p.call(vm_config)
-        end
+        eval_provider(vm_config)
+        eval_provisioners(vm_config)
+        eval_box(vm_config)
+        eval_private_networks(vm_config)
+        eval_forwarded_ports(vm_config)
+        eval_synced_folders(vm_config)
 
-        if defined? @provider
-          p = ConfigBuilder::ModelCollection.provider.generate(@provider)
-          p.call(vm_config)
-        end
-
-        vm_config.box = @box if defined? @box
-
-        @private_networks.each do |hash|
-          n = ConfigBuilder::Model::Network::PrivateNetwork.new_from_hash(hash)
-          n.call(vm_config)
-        end
-
-        @forwarded_ports.each do |hash|
-          f = ConfigBuilder::Model::Network::ForwardedPort.new_from_hash(hash)
-          f.call(vm_config)
-        end
-
-        @synced_folders.each do |hash|
-          f = ConfigBuilder::Model::SyncedFolder.new_from_hash(hash)
-          f.call(vm_config)
-        end
+        @extensions.each { |ext| send("eval_#{ext}".intern, vm_config) }
       end
+    end
+  end
+
+  def eval_provisioners(vm_config)
+    @provisioners.each do |hash|
+      p = ConfigBuilder::ModelCollection.provisioner.generate(hash)
+      p.call(vm_config)
+    end
+  end
+
+  def eval_provider(vm_config)
+    if defined? @provider
+      p = ConfigBuilder::ModelCollection.provider.generate(@provider)
+      p.call(vm_config)
+    end
+  end
+
+  def eval_box(vm_config)
+    vm_config.box = @box if defined? @box
+  end
+
+  def eval_private_networks(vm_config)
+    @private_networks.each do |hash|
+      n = ConfigBuilder::Model::Network::PrivateNetwork.new_from_hash(hash)
+      n.call(vm_config)
+    end
+  end
+
+  def eval_forwarded_ports(vm_config)
+    @forwarded_ports.each do |hash|
+      f = ConfigBuilder::Model::Network::ForwardedPort.new_from_hash(hash)
+      f.call(vm_config)
+    end
+  end
+
+  def eval_synced_folders(vm_config)
+    @synced_folders.each do |hash|
+      f = ConfigBuilder::Model::SyncedFolder.new_from_hash(hash)
+      f.call(vm_config)
     end
   end
 end
