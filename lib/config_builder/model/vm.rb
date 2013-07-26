@@ -84,6 +84,21 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model
       end
 
       vm_config.box = @box if defined? @box
+
+      @private_networks.each do |hash|
+        n = ConfigBuilder::Model::Network::PrivateNetwork.new_from_hash(hash)
+        n.call(vm_config)
+      end
+
+      @forwarded_ports.each do |hash|
+        f = ConfigBuilder::Model::Network::ForwardedPort.new_from_hash(hash)
+        f.call(vm_config)
+      end
+
+      @synced_folders.each do |hash|
+        f = ConfigBuilder::Model::SyncedFolder.new_from_hash(hash)
+        f.call(vm_config)
+      end
     end
   end
 end
