@@ -11,6 +11,7 @@ module ConfigBuilder
 
     require 'config_builder/model/synced_folder'
     require 'config_builder/model/vm'
+    require 'config_builder/model/ssh'
 
     module Network
       require 'config_builder/model/network/forwarded_port'
