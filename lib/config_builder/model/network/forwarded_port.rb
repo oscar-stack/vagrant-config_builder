@@ -1,7 +1,7 @@
 # Vagrant forwarded port model
 #
 # @see http://docs.vagrantup.com/v2/networking/forwarded_ports.html
-class ConfigBuilder::Model::Network::ForwardedPort < ConfigBuilder::Model
+class ConfigBuilder::Model::Network::ForwardedPort < ConfigBuilder::Model::Base
 
   # @!attribute [rw] guest
   #   @return [Fixnum] The guest port

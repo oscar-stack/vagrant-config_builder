@@ -1,5 +1,5 @@
 # @see http://docs.vagrantup.com/v2/provisioning/shell.html
-class ConfigBuilder::Model::Provisioner::Shell < ConfigBuilder::Model
+class ConfigBuilder::Model::Provisioner::Shell < ConfigBuilder::Model::Base
 
   # @!attribute [rw] inline
   #   @return [String] The inline shell command to run

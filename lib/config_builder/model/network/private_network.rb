@@ -1,7 +1,7 @@
 # Vagrant private network
 #
 # @see http://docs.vagrantup.com/v2/networking/private_network.html
-class ConfigBuilder::Model::Network::PrivateNetwork < ConfigBuilder::Model
+class ConfigBuilder::Model::Network::PrivateNetwork < ConfigBuilder::Model::Base
 
   # @!attribute [rw] :ip
   #   @return [String] The IP address to use for the private network interface

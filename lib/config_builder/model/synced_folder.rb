@@ -1,7 +1,7 @@
 # Vagrant shared folder model.
 #
 # @see http://docs.vagrantup.com/v2/synced-folders/index.html
-class ConfigBuilder::Model::SyncedFolder
+class ConfigBuilder::Model::SyncedFolder < ConfigBuilder::Model::Base
 
   # @!attribute [rw] host_path
   #   @return [String] The host file path to mount on the guest

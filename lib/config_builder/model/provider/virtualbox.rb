@@ -1,5 +1,5 @@
 # @see http://docs.vagrantup.com/v2/virtualbox/configuration.html
-class ConfigBuilder::Model::Provider::Virtualbox < ConfigBuilder::Model
+class ConfigBuilder::Model::Provider::Virtualbox < ConfigBuilder::Model::Base
 
   # @!attribute [rw] name
   #   @return [String] The name of the created VM in the Virtualbox GUI
