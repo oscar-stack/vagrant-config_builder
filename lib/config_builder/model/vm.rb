@@ -64,6 +64,10 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #   @return [String] The name of the Vagrant box to instantiate for this VM
   attr_accessor :box
 
+  # @!attribute [rw] name
+  #   @return [String] The name of the instantiated box in this environment
+  attr_accessor :name
+
   def initialize
     @provisioners     = []
     @forwarded_ports  = []
@@ -72,32 +76,36 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   end
 
   def to_proc
-    Proc.new do |vm_config|
-      @provisioners.each do |hash|
-        p = ConfigBuilder::ModelCollection.provisioner.generate(hash)
-        p.call(vm_config)
-      end
+    Proc.new do |global_config|
+      global_config.vm.define @name do |config|
+        vm_config = config.vm
 
-      if defined? @provider
-        p = ConfigBuilder::ModelCollection.provider.generate(@provider)
-        p.call(vm_config)
-      end
+        @provisioners.each do |hash|
+          p = ConfigBuilder::ModelCollection.provisioner.generate(hash)
+          p.call(vm_config)
+        end
 
-      vm_config.box = @box if defined? @box
+        if defined? @provider
+          p = ConfigBuilder::ModelCollection.provider.generate(@provider)
+          p.call(vm_config)
+        end
 
-      @private_networks.each do |hash|
-        n = ConfigBuilder::Model::Network::PrivateNetwork.new_from_hash(hash)
-        n.call(vm_config)
-      end
+        vm_config.box = @box if defined? @box
 
-      @forwarded_ports.each do |hash|
-        f = ConfigBuilder::Model::Network::ForwardedPort.new_from_hash(hash)
-        f.call(vm_config)
-      end
+        @private_networks.each do |hash|
+          n = ConfigBuilder::Model::Network::PrivateNetwork.new_from_hash(hash)
+          n.call(vm_config)
+        end
 
-      @synced_folders.each do |hash|
-        f = ConfigBuilder::Model::SyncedFolder.new_from_hash(hash)
-        f.call(vm_config)
+        @forwarded_ports.each do |hash|
+          f = ConfigBuilder::Model::Network::ForwardedPort.new_from_hash(hash)
+          f.call(vm_config)
+        end
+
+        @synced_folders.each do |hash|
+          f = ConfigBuilder::Model::SyncedFolder.new_from_hash(hash)
+          f.call(vm_config)
+        end
       end
     end
   end
