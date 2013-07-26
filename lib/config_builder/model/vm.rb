@@ -87,7 +87,7 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
         eval_forwarded_ports(vm_config)
         eval_synced_folders(vm_config)
 
-        @extensions.each { |ext| send("eval_#{ext}".intern, vm_config) }
+        #@extensions.each { |ext| send("eval_#{ext}".intern, vm_config) }
       end
     end
   end
