@@ -60,6 +60,10 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model
   #
   attr_accessor :synced_folders
 
+  # @!attribute [rw] box
+  #   @return [String] The name of the Vagrant box to instantiate for this VM
+  attr_accessor :box
+
   def initialize
     @provisioners     = []
     @forwarded_ports  = []
@@ -78,6 +82,8 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model
         p = ConfigBuilder::ModelCollection.provider.generate(@provider)
         p.call(vm_config)
       end
+
+      vm_config.box = @box if defined? @box
     end
   end
 end
