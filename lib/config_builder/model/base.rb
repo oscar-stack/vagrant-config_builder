@@ -20,8 +20,8 @@
 # If the Model delegates certain configuration to other models, the generated
 # lambda should be able to evaluate lambdas from the delegated models.
 #
-# Implementing classes do not need to inherit from ConfigBuilder::Model, but
-# it makes life easier.
+# Implementing classes do not need to inherit from ConfigBuilder::Model::Base,
+# but it makes life easier.
 class ConfigBuilder::Model::Base
 
   # Deserialize a hash into a configbuilder model
