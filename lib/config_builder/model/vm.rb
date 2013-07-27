@@ -1,6 +1,8 @@
 # @see http://docs.vagrantup.com/v2/vagrantfile/machine_settings.html
 class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
 
+  include ConfigBuilder::ModelDelegator
+
   # @!attribute [rw] provider
   #   @return [Hash<Symbol, Object>] The provider configuration for
   #     this VM
@@ -11,7 +13,7 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #           :name => 'tiny-tina',
   #           :gui  => false,
   #        }
-  attr_accessor :provider
+  def_model_delegator :provider
 
   # @!attribute [rw] provisioners
   #   @return [Array<Hash<Symbol, Object>>] A collection of provisioner
@@ -26,7 +28,7 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #           {:type => :puppet, :manifest => 'foo.pp'},
   #           {:type => :puppet, :manifest => 'bar.pp', :modulepath => '/vagrant/modules'},
   #        ]
-  attr_accessor :provisioners
+  def_model_delegator :provisioners
 
   # @!attribute [rw] forwarded_ports
   #   @return [Array<Hash<Symbol, Object>>] A collection of port mappings
@@ -36,7 +38,7 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #           {:guest => 80, :host  => 20080},
   #           {:guest => 443, :host => 20443},
   #        ]
-  attr_accessor :forwarded_ports
+  def_model_delegator :forwarded_ports
 
   # @!attribute [rw] private_networks
   #   @return [Array<Hash<Symbol, Object>>] A collection of IP address network
@@ -47,7 +49,7 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #           {:ip => '10.20.4.1'},
   #           {:ip => '192.168.100.5', :netmask => '255.255.255.128'},
   #        ]
-  attr_accessor :private_networks
+  def_model_delegator :private_networks
 
   # @!attribute [rw] synced_folders
   #   @return [Array<Hash<Symbol, Object>>]
@@ -58,7 +60,7 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #           {:host_path => 'modules/', :guest_path => '/root/modules'},
   #        ]
   #
-  attr_accessor :synced_folders
+  def_model_delegator :synced_folders
 
   # @!attribute [rw] box
   #   @return [String] The name of the Vagrant box to instantiate for this VM
@@ -79,18 +81,13 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
     Proc.new do |global_config|
       global_config.vm.define @name do |config|
         vm_config = config.vm
-
-        eval_provider(vm_config)
-        eval_provisioners(vm_config)
-        eval_box(vm_config)
-        eval_private_networks(vm_config)
-        eval_forwarded_ports(vm_config)
-        eval_synced_folders(vm_config)
-
-        #@extensions.each { |ext| send("eval_#{ext}".intern, vm_config) }
+        vm_config.box = @box if defined? @box
+        eval_models(vm_config)
       end
     end
   end
+
+  private
 
   def eval_provisioners(vm_config)
     @provisioners.each do |hash|
@@ -104,10 +101,6 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
       p = ConfigBuilder::Model::Provider.new_from_hash(@provider)
       p.call(vm_config)
     end
-  end
-
-  def eval_box(vm_config)
-    vm_config.box = @box if defined? @box
   end
 
   def eval_private_networks(vm_config)

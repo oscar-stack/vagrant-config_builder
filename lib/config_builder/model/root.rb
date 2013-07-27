@@ -2,15 +2,16 @@
 #
 # @see http://docs.vagrantup.com/v2/vagrantfile/index.html
 class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
-  attr_accessor :host
-  attr_accessor :ssh
-  attr_accessor :vms
+
+  include ConfigBuilder::ModelDelegator
+
+  def_model_delegator :host
+  def_model_delegator :ssh
+  def_model_delegator :vms
 
   def to_proc
     Proc.new do |root_config|
-      eval_host(root_config)
-      eval_ssh(root_config)
-      eval_vms(root_config)
+      eval_models(root_config)
     end
   end
 
