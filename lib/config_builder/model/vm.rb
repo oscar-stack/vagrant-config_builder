@@ -78,7 +78,7 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   def to_proc
     Proc.new do |global_config|
       global_config.vm.define @name do |config|
-        vm_config = config
+        vm_config = config.vm
 
         eval_provider(vm_config)
         eval_provisioners(vm_config)
