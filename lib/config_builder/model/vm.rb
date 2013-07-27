@@ -94,14 +94,14 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
 
   def eval_provisioners(vm_config)
     @provisioners.each do |hash|
-      p = ConfigBuilder::ModelCollection.provisioner.generate(hash)
+      p = ConfigBuilder::Model::Provisioner.new_from_hash(hash)
       p.call(vm_config)
     end
   end
 
   def eval_provider(vm_config)
     if defined? @provider
-      p = ConfigBuilder::ModelCollection.provider.generate(@provider)
+      p = ConfigBuilder::Model::Provider.new_from_hash(@provider)
       p.call(vm_config)
     end
   end

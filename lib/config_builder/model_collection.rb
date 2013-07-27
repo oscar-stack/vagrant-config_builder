@@ -27,16 +27,5 @@ module ConfigBuilder
     def inspect
       "<#{self.class}: (#{@name})>"
     end
-
-    class << self
-
-      def provider
-        @provider ||= self.new(:provider)
-      end
-
-      def provisioner
-        @provisioner ||= self.new(:provisioner)
-      end
-    end
   end
 end

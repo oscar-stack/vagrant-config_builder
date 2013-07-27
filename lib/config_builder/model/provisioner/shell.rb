@@ -22,4 +22,6 @@ class ConfigBuilder::Model::Provisioner::Shell < ConfigBuilder::Model::Base
       end
     end
   end
+
+  ConfigBuilder::Model::Provisioner.register('shell', self)
 end

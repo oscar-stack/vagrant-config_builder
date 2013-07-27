@@ -23,10 +23,32 @@ module ConfigBuilder
     end
 
     module Provider
+
+      @collection = ConfigBuilder::ModelCollection.new(:provider)
+
+      def self.new_from_hash(hash)
+        @collection.generate(hash)
+      end
+
+      def self.register(name, klass)
+        @collection.register(name, klass)
+      end
+
       require 'config_builder/model/provider/virtualbox'
     end
 
     module Provisioner
+
+      @collection = ConfigBuilder::ModelCollection.new(:provisioner)
+
+      def self.new_from_hash(hash)
+        @collection.generate(hash)
+      end
+
+      def self.register(name, klass)
+        @collection.register(name, klass)
+      end
+
       require 'config_builder/model/provisioner/shell'
       require 'config_builder/model/provisioner/puppet'
       require 'config_builder/model/provisioner/puppet_server'

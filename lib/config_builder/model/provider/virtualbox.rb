@@ -31,5 +31,5 @@ class ConfigBuilder::Model::Provider::Virtualbox < ConfigBuilder::Model::Base
     end
   end
 
-  ConfigBuilder::ModelCollection.provider.register('virtualbox', self)
+  ConfigBuilder::Model::Provider.register('virtualbox', self)
 end
