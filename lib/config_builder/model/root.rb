@@ -5,7 +5,7 @@ class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
 
   include ConfigBuilder::ModelDelegator
 
-  def_model_delegator :host
+  def_model_delegator :vagrant
   def_model_delegator :ssh
   def_model_delegator :vms
 
@@ -24,7 +24,7 @@ class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
     end
   end
 
-  def eval_host(root_config)
+  def eval_vagrant(root_config)
 
   end
 
