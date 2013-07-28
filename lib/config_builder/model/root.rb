@@ -25,7 +25,9 @@ class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
   end
 
   def eval_vagrant(root_config)
-
+    if (defined? @vagrant and @vagrant.has_key? :host)
+      root_config.vagrant.host = @vagrant[:host]
+    end
   end
 
   def eval_ssh(root_config)
