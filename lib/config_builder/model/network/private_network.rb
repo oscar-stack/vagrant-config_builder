@@ -5,11 +5,11 @@ class ConfigBuilder::Model::Network::PrivateNetwork < ConfigBuilder::Model::Base
 
   # @!attribute [rw] :ip
   #   @return [String] The IP address to use for the private network interface
-  attr_accessor :ip
+  def_model_attribute :ip
 
   def to_proc
     Proc.new do |vm_config|
-      vm_config.network(:private_network, :ip => @ip)
+      vm_config.network(:private_network, :ip => attr(:ip))
     end
   end
 end
