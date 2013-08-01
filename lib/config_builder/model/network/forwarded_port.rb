@@ -5,23 +5,28 @@ class ConfigBuilder::Model::Network::ForwardedPort < ConfigBuilder::Model::Base
 
   # @!attribute [rw] guest
   #   @return [Fixnum] The guest port
-  attr_accessor :guest
+  def_model_attribute :guest
 
   # @!attribute [rw] host
   #   @return [Fixnum] The host port
-  attr_accessor :host
+  def_model_attribute :host
 
   # @!attribute [rw] auto_correct
   #   @return [Boolean] Whether to automatically correct port collisions
-  attr_accessor :auto_correct
+  def_model_attribute :auto_correct
 
   def initialize
-    @auto_correct = false
+    @defaults = {:auto_correct => false}
   end
 
   def to_proc
     Proc.new do |vm_config|
-      vm_config.network(:forwarded_port, :guest => @guest, :host => @host, :auto_correct => @auto_correct)
+      vm_config.network(
+        :forwarded_port,
+        :guest        => attr(:guest),
+        :host         => attr(:host),
+        :auto_correct => attr(:auto_correct)
+      )
     end
   end
 end
