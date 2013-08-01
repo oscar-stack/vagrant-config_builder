@@ -11,7 +11,7 @@ class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
 
 
   def initialize
-    @defaults = {:vms => []}
+    @defaults = {:vms => [], :vagrant => {}}
   end
 
   def to_proc
@@ -30,8 +30,8 @@ class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
   end
 
   def eval_vagrant(root_config)
-    if (defined? @vagrant and @vagrant.has_key? :host)
-      root_config.vagrant.host = @vagrant[:host]
+    if attr(:vagrant).has_key? :host
+      root_config.vagrant.host = attr(:vagrant)[:host]
     end
   end
 
