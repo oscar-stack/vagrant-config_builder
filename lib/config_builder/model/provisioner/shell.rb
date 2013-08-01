@@ -3,22 +3,22 @@ class ConfigBuilder::Model::Provisioner::Shell < ConfigBuilder::Model::Base
 
   # @!attribute [rw] inline
   #   @return [String] The inline shell command to run
-  attr_accessor :inline
+  def_model_attribute :inline
 
   # @!attribute [rw] path
   #   @return [String] The path to the shell script to run
-  attr_accessor :path
+  def_model_attribute :path
 
   # @!attribute [rw] args
   #   @return [String] A string acting as an argument vector to the command.
-  attr_accessor :args
+  def_model_attribute :args
 
   def to_proc
     Proc.new do |vm_config|
       vm_config.provision :shell do |shell_config|
-        shell_config.inline = @inline if defined? @inline
-        shell_config.path   = @path   if defined? @path
-        shell_config.args   = @args   if defined? @args
+        shell_config.inline = attr(:inline) if attr(:inline)
+        shell_config.path   = attr(:path)   if attr(:path)
+        shell_config.args   = attr(:args)   if attr(:args)
       end
     end
   end

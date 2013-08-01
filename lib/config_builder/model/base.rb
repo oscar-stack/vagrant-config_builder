@@ -30,22 +30,18 @@ class ConfigBuilder::Model::Base
   # @return [Object < ConfigBuilder::Model]
   def self.new_from_hash(attributes)
     obj = new()
-    obj.attributes_from_hash(attributes)
+    obj.attrs = attributes
     obj
   end
 
-  # Populate model attributes from a hash
-  #
-  # @param attributes [Hash] The model attributes as represented in a hash.
-  # @return [void]
-  def attributes_from_hash(attributes)
-    attributes.each_pair do |attr, value|
-      setter = "#{attr}=".intern
-      if respond_to? setter
-        send(setter, value)
-      else
-        raise ConfigBuilder::Model::UnknownAttributeError, "attribute #{attr} undefined on #{self.class.inspect}"
-      end
+  # @api private
+  def attrs=(config)
+    hash = config.inject({}) { |hash, (key, value)| hash[key.to_sym] = value; hash }
+
+    if @defaults
+      @attrs = @defaults.merge(hash)
+    else
+      @attrs = hash
     end
   end
 
@@ -64,5 +60,27 @@ class ConfigBuilder::Model::Base
   # @return [void]
   def call(config)
     to_proc.call(config)
+  end
+
+  # @param identifier [Symbol]
+  #
+  # @return [Object] The value of the model attribute specified by `identifier`
+  #
+  # @todo validate identifier
+  def attr(identifier)
+    @attrs[identifier]
+  end
+  private :attr
+
+  class << self
+
+    # @param identifier [Symbol]
+    def def_model_attribute(identifier)
+      model_attributes << identifier
+    end
+
+    def model_attributes
+      (@identifiers ||= [])
+    end
   end
 end
