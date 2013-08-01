@@ -14,8 +14,6 @@ module ConfigBuilder
     loader = ConfigBuilder::Loader::YAML.new
     data   = loader.send(method, value)
     model  = ConfigBuilder::Model::Root.new_from_hash(data)
-    require 'pry'
-    binding.pry
     model.to_proc
   end
 end
