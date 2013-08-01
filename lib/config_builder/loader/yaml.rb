@@ -8,7 +8,7 @@ class ConfigBuilder::Loader::YAML
   #
   # @return [Hash]
   def yamldir(dir_path)
-    glob_path = File.join(dir_path, '*.yaml')
+    glob_path = File.join(dir_path, '*.ya?ml')
 
     rv = {}
     Dir.glob(glob_path).each do |file|
