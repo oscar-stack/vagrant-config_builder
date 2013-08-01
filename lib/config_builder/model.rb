@@ -1,5 +1,5 @@
 require 'vagrant/errors'
-require 'config_builder/model_collection'
+require 'config_builder/class_registry'
 require 'config_builder/model_delegator'
 
 module ConfigBuilder
@@ -25,14 +25,14 @@ module ConfigBuilder
 
     module Provider
 
-      @collection = ConfigBuilder::ModelCollection.new(:provider)
+      @registry = ConfigBuilder::ClassRegistry.new(:provider)
 
       def self.new_from_hash(hash)
-        @collection.generate(hash)
+        @registry.generate(hash)
       end
 
       def self.register(name, klass)
-        @collection.register(name, klass)
+        @registry.register(name, klass)
       end
 
       require 'config_builder/model/provider/virtualbox'
@@ -40,14 +40,14 @@ module ConfigBuilder
 
     module Provisioner
 
-      @collection = ConfigBuilder::ModelCollection.new(:provisioner)
+      @registry = ConfigBuilder::ClassRegistry.new(:provisioner)
 
       def self.new_from_hash(hash)
-        @collection.generate(hash)
+        @registry.generate(hash)
       end
 
       def self.register(name, klass)
-        @collection.register(name, klass)
+        @registry.register(name, klass)
       end
 
       require 'config_builder/model/provisioner/shell'
