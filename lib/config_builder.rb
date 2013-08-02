@@ -13,7 +13,7 @@ module ConfigBuilder
 
     loader = ConfigBuilder::Loader::YAML.new
     data   = loader.send(method, value)
-    model  = ConfigBuilder::Model::Root.new_from_hash(data)
-    model.to_proc
+
+    ConfigBuilder::Model::Root.new_from_hash(data)
   end
 end
