@@ -1,4 +1,5 @@
 require 'config_builder/loader'
+require 'config_builder/filter_stack'
 require 'config_builder/model'
 
 module ConfigBuilder
@@ -13,11 +14,12 @@ module ConfigBuilder
     private
 
     def run_filters(data)
-
+      stack = ConfigBuilder::FilterStack.new
+      stack.filter(data)
     end
 
     def generate_model(filtered_hash)
-
+      ConfigBuilder::Model.generate(filtered_hash)
     end
   end
 end
