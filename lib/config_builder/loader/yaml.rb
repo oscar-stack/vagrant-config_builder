@@ -27,4 +27,6 @@ class ConfigBuilder::Loader::YAML
   def yamlfile(file_path)
     ::YAML.load_file(file_path)
   end
+
+  ConfigBuilder::Loader.register(:yaml, self)
 end
