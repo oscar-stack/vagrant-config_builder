@@ -18,6 +18,10 @@ module ConfigBuilder
     require 'config_builder/model/vm'
     require 'config_builder/model/synced_folder'
 
+    def self.generate(hash)
+      ConfigBuilder::Model::Root.new_from_hash(hash)
+    end
+
     module Network
       require 'config_builder/model/network/forwarded_port'
       require 'config_builder/model/network/private_network'
