@@ -1,10 +1,9 @@
 $LOAD_PATH << File.expand_path(File.join('..', 'lib'), __FILE__)
-require 'vagrant-config_builder/version'
+require 'config_builder/version'
 
 Gem::Specification.new do |gem|
   gem.name    = 'vagrant-config_builder'
-  gem.version = VagrantHosts::VERSION
-  gem.date    = Date.today.to_s
+  gem.version = ConfigBuilder::VERSION
 
   gem.summary     = 'Generate Vagrant configurations from arbitrary data'
 
