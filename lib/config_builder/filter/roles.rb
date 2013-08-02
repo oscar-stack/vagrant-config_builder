@@ -41,7 +41,7 @@ class ConfigBuilder::Filter::Roles
 
     role_names.each do |name|
       role_definition = @roles[name]
-      template.merge!(role_definition)
+      vm_template.merge!(role_definition)
     end
 
     vm_template
