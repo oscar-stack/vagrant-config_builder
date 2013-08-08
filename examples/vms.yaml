@@ -1,0 +1,12 @@
+---
+vms:
+  -
+    name: master
+    private_networks: [ {auto_network: true} ]
+    box: centos-5-i386
+    roles: puppetmaster
+  -
+    name: agent
+    private_networks: [ {auto_network: true} ]
+    box: centos-5-i386
+    roles: puppetagent

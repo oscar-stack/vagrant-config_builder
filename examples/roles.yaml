@@ -1,0 +1,29 @@
+---
+roles:
+  puppetmaster:
+    provider:
+      type: virtualbox
+      customize: [[modifyvm, !ruby/sym id, '--memory', 1024]]
+    provisioners:
+      -
+        type: shell
+        inline: 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
+      -
+        type: hosts
+      -
+        type: pe_bootstrap
+        role: !ruby/sym master
+        relocate_manifests: false
+        version: '2.6.0'
+  puppetagent:
+    provisioners:
+      -
+        type: shell
+        inline: 'echo "nameserver 8.8.8.8" > /etc/resolv.conf'
+      -
+        type: hosts
+      -
+        type: pe_bootstrap
+        role: !ruby/sym agent
+        version: '2.6.0'
+
