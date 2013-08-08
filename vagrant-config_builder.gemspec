@@ -14,8 +14,6 @@ Gem::Specification.new do |gem|
   gem.has_rdoc = true
   gem.license  = 'Apache 2.0'
 
-  gem.add_dependency 'activemodel', '~> 3.2.13'
-
   gem.files        = %x{git ls-files -z}.split("\0")
   gem.require_path = 'lib'
 end
