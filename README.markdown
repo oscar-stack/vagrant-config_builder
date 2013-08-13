@@ -60,6 +60,14 @@ for clarity.
 Installation
 ------------
 
+Build the gem:
+
+  * `gem build vagrant-config_builder.gemspec`
+
+Install the gem:
+
+  * `gem install vagrant-config_builder-0.1.0dev.gem`
+
 Installation into the Vagrant internal gems:
 
   * `vagrant plugin install vagrant-config_builder`
