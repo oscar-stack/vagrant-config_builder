@@ -70,6 +70,10 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #   @return [String] The name of the instantiated box in this environment
   def_model_attribute :name
 
+  # @!attribute [rw] hostname
+  #   @return [String] The hostname the machine should have. 
+  def_model_attribute :hostname
+
   def initialize
     @defaults = {
       :provisioners     => [],
@@ -85,6 +89,7 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
         vm_config = config.vm
 
         vm_config.box = attr(:box) if defined? attr(:box)
+        vm_config.hostname = attr(:hostname) if defined? attr(:hostname)
 
         eval_models(vm_config)
       end
