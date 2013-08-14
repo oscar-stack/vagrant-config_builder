@@ -51,6 +51,7 @@ for clarity.
         name: db
         private_networks: [ {ip: '10.20.1.2'} ]
         box: centos-5-i386
+        hostname: db.puppetlabs.vm
         roles: bigvm
       -
         name: web
@@ -66,7 +67,7 @@ Build the gem:
 
 Install the gem:
 
-  * `gem install vagrant-config_builder-0.1.0dev.gem`
+  * `gem install vagrant-config_builder-0.1.1dev.gem`
 
 Installation into the Vagrant internal gems:
 
