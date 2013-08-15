@@ -7,7 +7,9 @@ module ConfigBuilder
   # @api private
   class ClassRegistry
 
-    class UnknownEntryError < Vagrant::Errors::VagrantError; end
+    class UnknownEntry < Vagrant::Errors::VagrantError
+      error_key('unknown_entry', 'config_builder.class_registry')
+    end
 
     def initialize(name)
       @name    = name
@@ -33,7 +35,9 @@ module ConfigBuilder
       if (klass = @klasses[identifier])
         klass
       else
-        raise UnknownEntryError, "#{self.inspect} doesn't have an entry registered with key #{identifier.inspect}"
+        raise UnknownEntry, :registry  => @name,
+                            :identifier => identifier.inspect,
+                            :identifiers => @klasses.keys
       end
     end
 
