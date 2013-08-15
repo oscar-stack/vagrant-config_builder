@@ -11,6 +11,10 @@ module ConfigBuilder
       error_key('unknown_entry', 'config_builder.class_registry')
     end
 
+    class DuplicateEntry < Vagrant::Errors::VagrantError
+      error_key('duplicate_entry', 'config_builder.class_registry')
+    end
+
     def initialize(name)
       @name    = name
       @klasses = {}
@@ -23,7 +27,12 @@ module ConfigBuilder
     #
     # @return [void]
     def register(identifier, klass)
-      @klasses[identifier] = klass
+      if @klasses[identifier]
+        raise DuplicateEntry, :registry => @name,
+                              :identifiers => @klasses.keys
+      else
+        @klasses[identifier] = klass
+      end
     end
 
     # Retrieve a class associated with the specified identifier
