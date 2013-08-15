@@ -1,6 +1,16 @@
 # The 'roles' filter adds a mechanism for defining generic VM roles and
 # applying them to VMs.
 #
+# Defining roles
+# --------------
+#
+# This filter adds support for a top level `roles` key. It contains a hash of
+# role names that define a hash containing the role behavior.
+#
+# @note: The 'vms' field is of type Array, while the 'roles' field is of type
+# Hash. This is because order of declaration matters for the actual VMs, while
+# the order of declaration of roles does not matter.
+#
 # @example
 #   >> hash_config
 #   =>  {
