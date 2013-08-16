@@ -57,7 +57,8 @@ module ConfigBuilder
     #
     # @return [Object] The generated object
     def generate(hash)
-      identifier = hash.delete('type')
+      config = hash.dup
+      identifier = config.delete('type')
 
       klass = retrieve(identifier)
 
