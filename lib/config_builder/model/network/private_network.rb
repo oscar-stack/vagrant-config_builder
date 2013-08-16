@@ -9,7 +9,7 @@ class ConfigBuilder::Model::Network::PrivateNetwork < ConfigBuilder::Model::Base
 
   def to_proc
     Proc.new do |vm_config|
-      vm_config.network(:private_network, :ip => attr(:ip))
+      vm_config.network(:private_network, @attrs)
     end
   end
 end
