@@ -6,8 +6,6 @@ module ConfigBuilder
 
   module Model
 
-    class UnknownAttributeError < Vagrant::Errors::VagrantError; end
-
     require 'config_builder/model/base'
 
     require 'config_builder/model/root'
