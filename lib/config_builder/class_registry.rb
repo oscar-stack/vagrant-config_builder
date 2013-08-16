@@ -66,7 +66,7 @@ module ConfigBuilder
     end
 
     def inspect
-      "<#{self.class}: (#{@name})>"
+      "<#{self.class}: (#{@name}) keys: #{@klasses.keys.inspect}>"
     end
   end
 end
