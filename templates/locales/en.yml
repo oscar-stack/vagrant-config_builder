@@ -1,0 +1,11 @@
+---
+en:
+  config_builder:
+    class_registry:
+      unknown_entry: |-
+        Unable to locate a class associated with the identifier %{identifier} in the registry
+        %{registry}. The relevant plugin may have not loaded the config_builder extension.
+        The identifiers registered with %{registry} are %{identifiers}.
+      duplicate_entry: |-
+        The class registry %{registry} already has a class registered with identifier %{identifer}
+        and cannot replace the existing entry.
