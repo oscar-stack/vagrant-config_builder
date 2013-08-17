@@ -1,0 +1,26 @@
+CHANGELOG
+=========
+
+0.2.0
+-----
+
+2013-08-16
+
+This is a backwards compatible bugfix and feature release.
+
+### User notes
+
+#### Enhancements
+
+  * (GH-10) Add support to vm model for hostname.
+
+#### Bugfixes
+
+  * (GH-9) Correctly merge VM attributes by concatentating arrays.
+
+0.1.0
+-----
+
+2013-08-08
+
+Initial release.
