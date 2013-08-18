@@ -25,10 +25,8 @@ module ConfigBuilder
     # @api private
     def set_filters(list)
       if list.nil?
-        @filter_stack << [
-          ConfigBuilder::Filter::Roles.new,
-          ConfigBuilder::Filter::Boxes.new,
-        ]
+        @filter_stack << ConfigBuilder::Filter::Roles.new
+        @filter_stack << ConfigBuilder::Filter::Boxes.new
       else
         @filter_stack = list
       end
