@@ -53,9 +53,13 @@ describe ConfigBuilder::Filter::Roles do
       {'vms' => vms}
     end
 
+    before do
+      subject.set_config(dup(config))
+    end
+
     it "doesn't alter the structure" do
       input  = dup(config)
-      output = subject.run(input)
+      output = subject.run
 
       expect(output).to eq config
     end
@@ -69,8 +73,12 @@ describe ConfigBuilder::Filter::Roles do
       }
     end
 
+    before do
+      subject.set_config(dup(config))
+    end
+
     it 'strips out the roles key' do
-      output = subject.run(config)
+      output = subject.run
       expect(output).to_not have_key 'roles'
     end
   end
@@ -85,9 +93,12 @@ describe ConfigBuilder::Filter::Roles do
       }
     end
 
+    before do
+      subject.set_config(dup(config))
+    end
+
     it "doesn't alter the vm" do
-      input  = dup(config)
-      output = subject.run(input)
+      output = subject.run
       expect(output['vms']).to eq vms
     end
   end
@@ -103,8 +114,12 @@ describe ConfigBuilder::Filter::Roles do
         }
       end
 
+      before do
+        subject.set_config(dup(config))
+      end
+
       let(:filtered_vm) do
-        output = subject.run(config)
+        output = subject.run
         output['vms'][0]
       end
 
@@ -137,8 +152,12 @@ describe ConfigBuilder::Filter::Roles do
         }
       end
 
+      before do
+        subject.set_config(dup(config))
+      end
+
       let(:filtered_vm) do
-        output = subject.run(config)
+        output = subject.run
         output['vms'][0]
       end
 
@@ -180,8 +199,12 @@ describe ConfigBuilder::Filter::Roles do
       }
     end
 
+    before do
+      subject.set_config(dup(config))
+      end
+
     let(:filtered_vms) do
-      output = subject.run(config)
+      output = subject.run
       output['vms']
     end
 
@@ -237,8 +260,12 @@ describe ConfigBuilder::Filter::Roles do
         'roles' => {'yep' => {'box' => 'moxxi'}}
       }
 
+      before do
+        subject.set_config(dup(config))
+      end
+
       it 'raises an error' do
-        expect { subject.run(config) }.to raise_error, /Couldn't find role named .*nope.*/
+        expect { subject.run }.to raise_error, /Couldn't find role named .*nope.*/
       end
     end
   end

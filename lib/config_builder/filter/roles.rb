@@ -12,7 +12,7 @@
 # the order of declaration of roles does not matter.
 #
 # @example
-#   >> hash_config
+#   >> run()
 #   =>  {
 #         'roles' => {
 #           'webserver' => {
@@ -37,19 +37,27 @@
 #
 class ConfigBuilder::Filter::Roles
 
-  def run(hash_config)
-    @roles = hash_config.delete('roles')
+  # @!attribute [r] roles
+  #   @return [Hash<String, Object>]
+  attr_reader :roles
 
-    hash_config['vms'].map! { |vm_hash| filter_vm(vm_hash) }
-
-    hash_config
+  def set_config(root_config)
+    @root_config = root_config
+    @roles       = @root_config.delete('roles')
+    @vms         = @root_config.delete('vms')
   end
 
-  private
+  def run
+    @root_config['vms'] = @vms.map { |vm_hash| filter_vm(vm_hash) }
+    @root_config
+  end
 
+  # @param vm_hash [Hash]
+  #
+  # @return [Hash] The filtered VM
   def filter_vm(old_vm)
     role_list  = old_vm.delete('roles')
-    node_stack = roles_for_vm(role_list)
+    node_stack = roles_by_name(role_list)
 
     node_stack << old_vm
 
@@ -60,25 +68,45 @@ class ConfigBuilder::Filter::Roles
     new_vm
   end
 
-  # @return [Array]
-  def roles_for_vm(role_field)
+  # Fetch the role associated with the given name
+  #
+  # @param role_name [String]
+  #
+  # @return [Hash<String, Object>]
+  def role(name)
+    if (retval = @roles[name])
+      retval
+    else
+      raise ArgumentError, "Requested role #{name.inspect} is not defined."
+    end
+  end
 
-    case role_field
-    when Array    then names = role_field
-    when String   then names = [role_field]
+  # @overload roles_by_name(name)
+  #   @param name [String] A single role name
+  #   @return [Array<Hash>] An array containing the requested role
+  #
+  # @overload roles_by_name(names)
+  #   @param names [Array<String>] A list of role names
+  #   @return [Array<Hash>] An array containing all of the requested roles in the
+  #                         order requested.
+  #
+  # @overload roles_by_name(nothing)
+  #   @param nothing [NilClass] nil
+  #   @return [Array<>] An empty array
+  #
+  # @return [Array]
+  def roles_by_name(field)
+
+    case field
+    when Array    then names = field
+    when String   then names = [field]
     when NilClass then names = []
     end
 
-    names.map { |name| role_definition(name) }
+    names.map { |name| role(name) }
   end
 
-  def role_definition(name)
-    if (defn = @roles[name])
-      defn
-    else
-      raise "Couldn't find role named #{name.inspect} in roles #{@roles.keys.inspect}"
-    end
-  end
+  private
 
   # Merge two node hash structures, with values in `right` overwriting values
   # in `left`.
