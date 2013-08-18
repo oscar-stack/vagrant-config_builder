@@ -66,6 +66,10 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #   @return [String] The name of the Vagrant box to instantiate for this VM
   def_model_attribute :box
 
+  # @!attribute [rw] box_url
+  #   @return [String] The source URL for the Vagrant box associated with this VM
+  def_model_attribute :box
+
   # @!attribute [rw] name
   #   @return [String] The name of the instantiated box in this environment
   def_model_attribute :name
@@ -89,6 +93,7 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
         vm_config = config.vm
 
         vm_config.box = attr(:box) if defined? attr(:box)
+        vm_config.box_url = attr(:box_url) if defined? attr(:box_url)
         vm_config.hostname = attr(:hostname) if defined? attr(:hostname)
 
         eval_models(vm_config)
