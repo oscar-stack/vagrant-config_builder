@@ -8,6 +8,8 @@ class ConfigBuilder::Filter::Boxes
   end
 
   def run
+    return @root_config if @root_config['vms'].nil?
+
     @root_config['vms'].each { |vm_hash| filter_vm(vm_hash) }
     @root_config
   end

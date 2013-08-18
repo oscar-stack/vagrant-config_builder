@@ -48,6 +48,8 @@ class ConfigBuilder::Filter::Roles
   end
 
   def run
+    return @root_config if @vms.nil?
+
     @root_config['vms'] = @vms.map { |vm_hash| filter_vm(vm_hash) }
     @root_config
   end
@@ -77,7 +79,7 @@ class ConfigBuilder::Filter::Roles
     if (retval = @roles[name])
       retval
     else
-      raise ArgumentError, "Requested role #{name.inspect} is not defined."
+      raise ArgumentError, "Requested role #{name.inspect} is not defined, available roles: #{@roles.keys}."
     end
   end
 

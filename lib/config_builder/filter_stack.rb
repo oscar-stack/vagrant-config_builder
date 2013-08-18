@@ -13,10 +13,12 @@ module ConfigBuilder
     def filter(input)
       set_filters(input.delete(:filters))
 
-      @filter_stack.inject(input) do |current_input, filter|
+      output = @filter_stack.inject(input) do |current_input, filter|
         filter.set_config(current_input)
         filter.run
       end
+
+      output
     end
 
     private

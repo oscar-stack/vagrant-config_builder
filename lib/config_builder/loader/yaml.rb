@@ -13,7 +13,12 @@ class ConfigBuilder::Loader::YAML
     rv = {}
     Dir.glob(glob_path).each do |file|
       contents = ::YAML.load_file(file)
-      rv.merge!(contents)
+
+      if contents.is_a? Hash
+        rv.merge! contents
+      else
+        # TODO warn on non-hash YAML
+      end
     end
 
     rv
