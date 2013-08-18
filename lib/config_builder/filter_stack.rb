@@ -14,7 +14,8 @@ module ConfigBuilder
       set_filters(input.delete(:filters))
 
       @filter_stack.inject(input) do |current_input, filter|
-        filter.run(current_input)
+        filter.set_config(current_input)
+        filter.run
       end
     end
 
