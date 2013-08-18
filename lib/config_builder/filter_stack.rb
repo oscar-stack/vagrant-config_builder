@@ -23,7 +23,10 @@ module ConfigBuilder
 
     def set_filters(list)
       if list.nil?
-        @filter_stack << ConfigBuilder::Filter::Roles.new
+        @filter_stack << [
+          ConfigBuilder::Filter::Roles.new,
+          ConfigBuilder::Filter::Boxes.new,
+        ]
       else
         raise NotImplementedError, "Custom lists of filters not implemented."
       end
