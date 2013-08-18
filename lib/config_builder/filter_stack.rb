@@ -21,6 +21,8 @@ module ConfigBuilder
 
     private
 
+    # @note The implementation of this method is not final, use at your own peril.
+    # @api private
     def set_filters(list)
       if list.nil?
         @filter_stack << [
@@ -28,7 +30,7 @@ module ConfigBuilder
           ConfigBuilder::Filter::Boxes.new,
         ]
       else
-        raise NotImplementedError, "Custom lists of filters not implemented."
+        @filter_stack = list
       end
     end
   end
