@@ -7,5 +7,5 @@ en:
         %{registry}. The relevant plugin may have not loaded the config_builder extension.
         The identifiers registered with %{registry} are %{identifiers}.
       duplicate_entry: |-
-        The class registry %{registry} already has a class registered with identifier %{identifer}
+        The class registry %{registry} already has a class registered with identifier %{identifier}
         and cannot replace the existing entry.
