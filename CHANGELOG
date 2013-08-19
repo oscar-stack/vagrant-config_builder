@@ -1,6 +1,23 @@
 CHANGELOG
 =========
 
+0.3.0
+-----
+
+This is a backwards compatible bugfix and feature release
+
+### User notes
+
+#### Enhancements
+
+  * (GH-6) New filter: `boxes`
+  * box_url is now a supported vm attribute
+
+#### Bugfixes
+
+  * Better error handling when no configuration is set
+  * Add missing variable when raising ClassRegistry::DuplicateEntry error
+
 0.2.0
 -----
 
