@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+0.3.1
+-----
+
+This is a backwards compatible bugfix release.
+
+  * Fixed the whole missing variable for ClassRegistry::DuplicateEntry.
+    This time, for realsies.
+
 0.3.0
 -----
 
