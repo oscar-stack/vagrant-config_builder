@@ -29,6 +29,7 @@ module ConfigBuilder
     def register(identifier, klass)
       if @klasses[identifier]
         raise DuplicateEntry, :registry => @name,
+                              :identifier => identifier.inspect,
                               :identifiers => @klasses.keys
       else
         @klasses[identifier] = klass
