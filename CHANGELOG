@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+0.4.0
+-----
+
+2013-08-28
+
+This is a backwards compatible feature release.
+
+  * (GH-11) Register puppet and puppet_server as provisioners
+
 0.3.1
 -----
 
