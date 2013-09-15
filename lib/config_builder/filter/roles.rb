@@ -126,6 +126,7 @@ class ConfigBuilder::Filter::Roles
       forwarded_ports
       private_networks
       public_networks
+      guest
     ]
 
     array_keys.each do |key|
