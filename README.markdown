@@ -31,7 +31,7 @@ for clarity.
     Vagrant.configure('2', &ConfigBuilder.load(
       :yaml,
       :yamldir,
-      File.expand_path('config', __DIR__)
+      File.expand_path('../config', __FILE__)
     ))
 
 #### config/roles.yaml
