@@ -2,22 +2,28 @@ require 'yaml'
 
 class ConfigBuilder::Loader::YAML
 
-  # Load configuration from all files in a given directory
+  # Load configuration from YAML files in one or more directories
   #
-  # @param dir_path [String]
+  # @overload yamldir(path)
+  #   @param path [String] A directory path containing YAML files
+  # @overload yamldir(paths)
+  #   @param paths [Array<String>] A list of directory paths containing YAML files
   #
   # @return [Hash]
-  def yamldir(dir_path)
-    glob_path = File.join(dir_path, '*.{yml,yaml}')
+  def yamldir(input)
+    dirs = Array(input)
+
+    files = dirs.map do |dir|
+      pattern = File.join(dir, '*.{yml,yaml}')
+      Dir.glob(pattern)
+    end.flatten
 
     rv = {}
-    Dir.glob(glob_path).each do |file|
-      contents = ::YAML.load_file(file)
 
+    files.each do |file|
+      contents = ::YAML.load_file(file)
       if contents.is_a? Hash
         rv.merge! contents
-      else
-        # TODO warn on non-hash YAML
       end
     end
 
