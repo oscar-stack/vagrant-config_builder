@@ -16,9 +16,9 @@ class ConfigBuilder::Model::Provisioner::PuppetServer < ConfigBuilder::Model::Ba
   def to_proc
     Proc.new do |vm_config|
       vm_config.provision :puppet_server do |puppet_config|
-        puppet_config.puppet_server = attr(:puppet_server)  if attr(:puppet_server)
-        puppet_config.node_name     = attr(:node_name)      if attr(:node_name)
-        puppet_config.options       = attr(:options)        if attr(:options)
+        with_attr(:puppet_server) { |val| puppet_config.puppet_server = val }
+        with_attr(:node_name)     { |val| puppet_config.node_name     = val }
+        with_attr(:options)       { |val| puppet_config.options       = val }
       end
     end
   end

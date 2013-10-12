@@ -96,10 +96,10 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
       global_config.vm.define(attr(:name)) do |config|
         vm_config = config.vm
 
-        vm_config.box = attr(:box) if defined? attr(:box)
-        vm_config.box_url = attr(:box_url) if defined? attr(:box_url)
-        vm_config.hostname = attr(:hostname) if defined? attr(:hostname)
-        vm_config.guest = attr(:guest) if defined? attr(:guest)
+        with_attr(:box)      { |val| vm_config.box      = attr(:box)      }
+        with_attr(:box_url)  { |val| vm_config.box_url  = attr(:box_url)  }
+        with_attr(:hostname) { |val| vm_config.hostname = attr(:hostname) }
+        with_attr(:guest)    { |val| vm_config.guest    = attr(:guest)    }
 
         eval_models(vm_config)
       end

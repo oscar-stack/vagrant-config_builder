@@ -20,13 +20,13 @@ class ConfigBuilder::Model::Provider::Virtualbox < ConfigBuilder::Model::Base
   def to_proc
     Proc.new do |vm_config|
       vm_config.provider 'virtualbox' do |vb_config|
-        vb_config.name = attr(:name) if attr(:name)
+        with_attr(:name) { |val| vb_config.name = val }
 
         attr(:customize).each do |cmd|
           vb_config.customize cmd
         end
 
-        vb_config.gui = attr(:gui) if attr(:gui)
+        with_attr(:gui) { |val| vb_config.gui = val }
       end
     end
   end

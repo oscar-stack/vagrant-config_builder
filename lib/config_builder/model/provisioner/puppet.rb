@@ -24,11 +24,11 @@ class ConfigBuilder::Model::Provisioner::Puppet < ConfigBuilder::Model::Base
   def to_proc
     Proc.new do |vm_config|
       vm_config.provision :puppet do |puppet_config|
-        puppet_config.manifests_path = attr(:manifests_path) if attr(:manifests_path)
-        puppet_config.manifest_file  = attr(:manifest_file)  if attr(:manifest_file)
-        puppet_config.module_path    = attr(:module_path)    if attr(:module_path)
-        puppet_config.facter         = attr(:facter)         if attr(:facter)
-        puppet_config.options        = attr(:options)        if attr(:options)
+        with_attr(:manifests_path) { |val| puppet_config.manifests_path = val }
+        with_attr(:manifest_file)  { |val| puppet_config.manifest_file  = val }
+        with_attr(:module_path)    { |val| puppet_config.module_path    = val }
+        with_attr(:facter)         { |val| puppet_config.facter         = val }
+        with_attr(:options)        { |val| puppet_config.options        = val }
       end
     end
   end

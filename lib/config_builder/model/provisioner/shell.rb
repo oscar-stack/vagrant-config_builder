@@ -16,9 +16,9 @@ class ConfigBuilder::Model::Provisioner::Shell < ConfigBuilder::Model::Base
   def to_proc
     Proc.new do |vm_config|
       vm_config.provision :shell do |shell_config|
-        shell_config.inline = attr(:inline) if attr(:inline)
-        shell_config.path   = attr(:path)   if attr(:path)
-        shell_config.args   = attr(:args)   if attr(:args)
+        with_attr(:inline) { |val| shell_config.inline = val }
+        with_attr(:path)   { |val| shell_config.path   = val }
+        with_attr(:args)   { |val| shell_config.args   = val }
       end
     end
   end
