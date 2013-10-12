@@ -72,6 +72,19 @@ class ConfigBuilder::Model::Base
   end
   private :attr
 
+  # Conditionally evaluate a block with a model attribute if it's defined
+  #
+  # @param identifier [Symbol] The attribute identifier
+  #
+  # @return [void]
+  def with_attr(identifier)
+    val = @attrs[identifier]
+    unless val.nil?
+      yield val
+    end
+  end
+  private :with_attr
+
   class << self
 
     # @param identifier [Symbol]
