@@ -74,6 +74,8 @@ class ConfigBuilder::Model::Base
 
   # Conditionally evaluate a block with a model attribute if it's defined
   #
+  # @since 0.6.0
+  #
   # @param identifier [Symbol] The attribute identifier
   #
   # @return [void]
