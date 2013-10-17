@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+0.6.0
+-----
+
+2013-10-17
+
+This is a backwards incompatible feature release.
+
+  * Loader::YAML#yamldir can now accept a list of directories to use for
+    configuration.
+
+Thanks to Charlie Sharpsteen for his help on this release.
+
 0.5.0
 -----
 
