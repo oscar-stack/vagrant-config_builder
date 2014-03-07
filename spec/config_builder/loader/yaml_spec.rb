@@ -25,9 +25,19 @@ roles:
       - {ip: '0.0.0.0', auto_network: true}
       EOF
 
-      # Currently empty.
-      allow(::YAML).to receive(:load_file).with('b/boxes.yaml').and_return({})
-      allow(::YAML).to receive(:load_file).with('b/roles.yaml').and_return({})
+      allow(::YAML).to receive(:load_file).with('b/boxes.yaml').and_return(::YAML.load <<-EOF)
+---
+boxes:
+  'box-b': 'http://puppet-vagrant-boxes.puppetlabs.com/'
+      EOF
+
+      allow(::YAML).to receive(:load_file).with('b/roles.yaml').and_return(::YAML.load <<-EOF)
+---
+roles:
+  base:
+    private_networks:
+      - {ip: '10.0.0.1'}
+      EOF
     end
 
 
@@ -43,11 +53,24 @@ roles:
       expect(::YAML).to have_received(:load_file).exactly(4).times
     end
 
-    it 'merges loaded hashes' do
+    it 'merges separate hashes' do
       config = subject.yamldir('tst_dir_a')
 
       expect(config).to have_key('boxes')
       expect(config).to have_key('roles')
+    end
+
+    describe 'when merging overlapping configs' do
+      let(:config) { subject.yamldir(['tst_dir_a', 'tst_dir_b']) }
+
+      it 'merges subhashes' do
+        expect(config['boxes']).to have_key('box-a')
+        expect(config['boxes']).to have_key('box-b')
+      end
+
+      it 'concatenates subarrays' do
+        expect(config['roles']['base']['private_networks']).to have(2).items
+      end
     end
   end
 end
