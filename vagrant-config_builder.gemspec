@@ -17,5 +17,7 @@ Gem::Specification.new do |gem|
   gem.files        = %x{git ls-files -z}.split("\0")
   gem.require_path = 'lib'
 
+  gem.add_runtime_dependency 'deep_merge', '~> 1.0.0'
+
   gem.add_development_dependency 'rspec', '~> 2.14.0'
 end
