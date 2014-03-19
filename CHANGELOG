@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+0.7.0
+-----
+
+2014-03-19
+
+This is a backwards compatible feature release.
+
+  * (GH-15) Deep merge data when loading configurations. This allows
+    individual top level keys to be split up between files.
+
+Thanks to Charlie Sharpsteen creating this release.
+
 0.6.0
 -----
 
