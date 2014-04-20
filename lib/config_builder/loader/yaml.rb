@@ -1,5 +1,5 @@
 require 'yaml'
-require 'deep_merge'
+require 'deep_merge/core'
 
 class ConfigBuilder::Loader::YAML
 
@@ -24,7 +24,7 @@ class ConfigBuilder::Loader::YAML
     files.each do |file|
       contents = ::YAML.load_file(file)
       if contents.is_a? Hash
-        rv.deep_merge! contents
+        rv = DeepMerge::deep_merge!(contents, rv, {:preserve_unmergables => false})
       end
     end
 
