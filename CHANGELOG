@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+0.7.1
+-----
+
+2014-04-22
+
+  * (GH-17) Call DeepMerge directly to avoid shadowing during loading
+
+### Thanks
+
+Thanks to Charlie Sharpsteen creating this release.
+
 0.7.0
 -----
 
