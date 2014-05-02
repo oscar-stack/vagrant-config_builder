@@ -38,6 +38,7 @@ module ConfigBuilder
       end
 
       require 'config_builder/model/provider/virtualbox'
+      require 'config_builder/model/provider/vmware_fusion'
     end
 
     module Provisioner
