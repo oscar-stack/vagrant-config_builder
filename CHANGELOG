@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.8.0
+-----
+
+2014-05-02
+
+  * (GH-16) Add vmware_fusion provider implementation.
+
 0.7.1
 -----
 
