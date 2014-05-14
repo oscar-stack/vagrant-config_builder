@@ -54,7 +54,7 @@ class ConfigBuilder::Filter::Roles
     @root_config
   end
 
-  # @param vm_hash [Hash]
+  # @param old_vm [Hash]
   #
   # @return [Hash] The filtered VM
   def filter_vm(old_vm)
@@ -72,7 +72,7 @@ class ConfigBuilder::Filter::Roles
 
   # Fetch the role associated with the given name
   #
-  # @param role_name [String]
+  # @param name [String]
   #
   # @return [Hash<String, Object>]
   def role(name)

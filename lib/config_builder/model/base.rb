@@ -56,7 +56,7 @@ class ConfigBuilder::Model::Base
   # Generate a block based on the attribute configuration and call it with
   # the given config.
   #
-  # @param [Vagrant.plugin('2', :config)]
+  # @param config [Vagrant.plugin('2', :config)]
   # @return [void]
   def call(config)
     to_proc.call(config)
