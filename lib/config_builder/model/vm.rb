@@ -15,6 +15,17 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #        }
   def_model_delegator :provider
 
+  # @!attribute [rw] providers
+  #   @return [Array<Hash{String, Symbol => Object}>] A collection of provider
+  #     parameters that should be applied to a VM.
+  #   @example
+  #     >> vm.providers
+  #     => [
+  #          {:type => 'virtualbox', :customize => ['modifyvm', :id, '--memory', 1024]},
+  #          {:type => 'vmware_fusion', :vmx => {:memsize => 1024}},
+  #        ]
+  def_model_delegator :providers
+
   # @!attribute [rw] provisioners
   #   @return [Array<Hash<Symbol, Object>>] A collection of provisioner
   #     parameters in the order that they should be applied
@@ -84,6 +95,7 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
 
   def initialize
     @defaults = {
+      :providers        => [],
       :provisioners     => [],
       :forwarded_ports  => [],
       :private_networks => [],
@@ -111,6 +123,13 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   def eval_provisioners(vm_config)
     attr(:provisioners).each do |hash|
       p = ConfigBuilder::Model::Provisioner.new_from_hash(hash)
+      p.call(vm_config)
+    end
+  end
+
+  def eval_providers(vm_config)
+    attr(:providers).each do |hash|
+      p = ConfigBuilder::Model::Provider.new_from_hash(hash)
       p.call(vm_config)
     end
   end

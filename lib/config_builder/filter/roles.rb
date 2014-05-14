@@ -121,6 +121,7 @@ class ConfigBuilder::Filter::Roles
     retval = right.clone
 
     array_keys = %w[
+      providers
       provisioners
       synced_folders
       forwarded_ports
