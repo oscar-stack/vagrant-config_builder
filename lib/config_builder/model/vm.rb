@@ -93,6 +93,11 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #   @return [String] The hostname the machine should have.
   def_model_attribute :hostname
 
+  # @!attribute [rw] communicator
+  #   @return [String] The name of the communicator to use when sending
+  #   commands to this box. Set to 'winrm' for Windows VMs.
+  def_model_attribute :communicator
+
   def initialize
     @defaults = {
       :providers        => [],
@@ -112,6 +117,8 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
         with_attr(:box_url)  { |val| vm_config.box_url  = attr(:box_url)  }
         with_attr(:hostname) { |val| vm_config.hostname = attr(:hostname) }
         with_attr(:guest)    { |val| vm_config.guest    = attr(:guest)    }
+
+        with_attr(:communicator) { |val| vm_config.communicator = attr(:communicator) }
 
         eval_models(vm_config)
       end

@@ -138,7 +138,7 @@ class ConfigBuilder::Filter::Roles
       end
     end
 
-    single_keys = %w[provider box name]
+    single_keys = %w[provider box name communicator]
 
     single_keys.each do |key|
       retval[key] = left[key] if left[key]
