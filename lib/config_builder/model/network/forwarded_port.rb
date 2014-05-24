@@ -15,8 +15,12 @@ class ConfigBuilder::Model::Network::ForwardedPort < ConfigBuilder::Model::Base
   #   @return [Boolean] Whether to automatically correct port collisions
   def_model_attribute :auto_correct
 
+  # @!attribute [rw] id
+  #   @return [String, nil] An optional name used to identify this port forward
+  def_model_attribute :id
+
   def initialize
-    @defaults = {:auto_correct => false}
+    @defaults = {:auto_correct => false, :id => nil}
   end
 
   def to_proc
@@ -25,7 +29,8 @@ class ConfigBuilder::Model::Network::ForwardedPort < ConfigBuilder::Model::Base
         :forwarded_port,
         :guest        => attr(:guest),
         :host         => attr(:host),
-        :auto_correct => attr(:auto_correct)
+        :auto_correct => attr(:auto_correct),
+        :id           => attr(:id),
       )
     end
   end
