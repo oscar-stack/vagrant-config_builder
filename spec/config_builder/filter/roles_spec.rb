@@ -35,6 +35,11 @@ describe ConfigBuilder::Filter::Roles do
           {'guest_path' => '/guest-3', 'host_path' => './host-3'},
           {'guest_path' => '/guest-4', 'host_path' => './host-4'},
         ],
+      },
+      'shared-networks' => {
+        'private_networks' => [
+          {'ip' => '1.2.3.4'}
+        ]
       }
     }
   end
@@ -183,11 +188,11 @@ describe ConfigBuilder::Filter::Roles do
       [
         {
           'name'  => 'master',
-          'roles' => ['shell-provisioner', 'potato-provisioner', 'folders-12', 'folders-34'],
+          'roles' => ['shell-provisioner', 'potato-provisioner', 'folders-12', 'folders-34', 'shared-networks'],
         },
         {
           'name' => 'agent',
-          'roles' => ['shell-provisioner', 'puppet-provisioner', 'folders-34'],
+          'roles' => ['shell-provisioner', 'puppet-provisioner', 'folders-34', 'shared-networks'],
         }
       ]
     end
@@ -249,6 +254,16 @@ describe ConfigBuilder::Filter::Roles do
         ]
 
         expect(vm['synced_folders']).to eq expected
+      end
+    end
+
+    context 'when modifying an array inherited from a role' do
+      before :each do
+        filtered_vms[0]['private_networks'].push 'ip' => '5.6.7.8'
+      end
+
+      it 'other VMs using that role are not affected' do
+        expect(filtered_vms[1]['private_networks']).to eq roles['shared-networks']['private_networks']
       end
     end
   end

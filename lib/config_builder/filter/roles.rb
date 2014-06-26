@@ -134,7 +134,7 @@ class ConfigBuilder::Filter::Roles
       if (left[key] and right[key])
         retval[key] += left[key]
       elsif left[key]
-        retval[key] = left[key]
+        retval[key] = left[key].clone
       end
     end
 
