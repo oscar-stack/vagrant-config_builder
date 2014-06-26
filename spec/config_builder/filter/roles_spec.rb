@@ -259,14 +259,14 @@ describe ConfigBuilder::Filter::Roles do
         'vms' => [{'name' => 'master', 'roles' => 'nope'}],
         'roles' => {'yep' => {'box' => 'moxxi'}}
       }
+    end
 
-      before do
-        subject.set_config(dup(config))
-      end
+    before do
+      subject.set_config(dup(config))
+    end
 
-      it 'raises an error' do
-        expect { subject.run }.to raise_error, /Couldn't find role named .*nope.*/
-      end
+    it 'raises an error' do
+      expect { subject.run }.to raise_error(/^Requested role "nope" is not defined/)
     end
   end
 end
