@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+0.10.1
+------
+
+2014-07-08
+
+This is a backwards bugfix release.
+
+  * Fixed an issue where VM definitions would end up with linked copies of an
+    array because cloning was not used.
+
+  * The `id` attribute can now be specified for `forwarded_port`.
+
 0.10.0
 ------
 
