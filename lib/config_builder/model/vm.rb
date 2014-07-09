@@ -73,6 +73,15 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #
   def_model_delegator :synced_folders
 
+  # @!attribute [rw] plugins
+  #   @return [Array<Hash<Symbol, Object>>]
+  #   @example
+  #     >> config.plugins
+  #     => [
+  #           {:plugin => 'vagrant-vbguest', :config_attribute => 'vbguest', {:auto_update => false, }},
+  #        ]
+  def_model_delegator :plugins
+
   # @!attribute [rw] box
   #   @return [String] The name of the Vagrant box to instantiate for this VM
   def_model_attribute :box
@@ -105,6 +114,7 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
       :forwarded_ports  => [],
       :private_networks => [],
       :synced_folders   => [],
+      :plugins          => [],
     }
   end
 
@@ -122,6 +132,7 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
 
         eval_models(vm_config)
       end
+      eval_plugins(global_config)
     end
   end
 
@@ -166,6 +177,13 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
     attr(:synced_folders).each do |hash|
       f = ConfigBuilder::Model::SyncedFolder.new_from_hash(hash)
       f.call(vm_config)
+    end
+  end
+
+  def eval_plugins(global_config)
+    attr(:plugins).each do |hash|
+      f = ConfigBuilder::Model::PluginEntry.new_from_hash(hash)
+      f.call(global_config)
     end
   end
 end
