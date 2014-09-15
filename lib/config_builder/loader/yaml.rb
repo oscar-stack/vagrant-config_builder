@@ -22,7 +22,7 @@ class ConfigBuilder::Loader::YAML
     rv = {}
 
     files.each do |file|
-      contents = ::YAML.load_file(file)
+      contents = yamlfile(file)
       if contents.is_a? Hash
         rv = DeepMerge::deep_merge!(contents, rv, {:preserve_unmergables => false})
       end
