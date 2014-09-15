@@ -35,7 +35,7 @@ class ConfigBuilder::Model::SyncedFolder < ConfigBuilder::Model::Base
   def folder_opts
     h = {}
     with_attr(:extra)   { |val| h[:extra]    = val }
-    with_attr(:disable) { |val| h[:disabled] = val }
+    with_attr(:disabled) { |val| h[:disabled] = val }
     with_attr(:nfs)     { |val| h[:nfs]      = val }
 
     h
