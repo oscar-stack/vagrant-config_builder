@@ -43,6 +43,7 @@ module ConfigBuilder
       require 'config_builder/model/provider/vmware_fusion'
       require 'config_builder/model/provider/vmware_workstation'
       require 'config_builder/model/provider/libvirt'
+      require 'config_builder/model/provider/vsphere'
     end
 
     module Provisioner
