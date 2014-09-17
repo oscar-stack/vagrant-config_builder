@@ -1,6 +1,24 @@
 CHANGELOG
 =========
 
+0.11.0
+------
+
+2014-09-17
+
+This is a backwards feature release.
+
+  * (GH-23) Fix misspelling of `disabled` option for synced folders.
+
+  * (GH-26) Enable configuration of global WinRM options.
+
+  * Enable configuration of global SSH options.
+
+  * Enable configuration of additional box download options such as
+    checksumming and versioning.
+
+Thanks to Nan Liu and Ethan Brown for their contributions to this release.
+
 0.10.1
 ------
 
