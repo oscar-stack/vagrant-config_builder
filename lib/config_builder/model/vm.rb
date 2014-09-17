@@ -73,17 +73,74 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #
   def_model_delegator :synced_folders
 
-  # @!attribute [rw] box
-  #   @return [String] The name of the Vagrant box to instantiate for this VM
-  def_model_attribute :box
-
   # @!attribute [rw] guest
   #   @return [String] The guest type to use for this VM
   def_model_attribute :guest
 
-  # @!attribute [rw] box_url
-  #   @return [String] The source URL for the Vagrant box associated with this VM
+  # @!attribute [rw] box
+  #   @return [String] This configures what box the machine will be brought up
+  #     against. The value here should be the name of an installed box or a
+  #     shorthand name of a box in Vagrant Cloud.
   def_model_attribute :box
+
+  # @!attribute [rw] box_url
+  #   @return [String, Array<String>] The URL that the configured box can be
+  #     found at. If `box` is a shorthand to a box in Vagrant Cloud then this
+  #     value doesn't need to be specified. Otherwise, it should point to the
+  #     proper place where the box can be found if it isn't installed.
+  #
+  #     This can also be an array of multiple URLs. The URLs will be tried in
+  #     order. Note that any client certificates, insecure download settings,
+  #     and so on will apply to all URLs in this list.
+  #
+  #     The URLs can also be local files by using the file:// scheme. For
+  #     example: "file:///tmp/test.box".
+  def_model_attribute :box_url
+
+  # @!attribute [rw] box_download_checksum
+  #   @return [String] The checksum of the box specified by `box_url`.
+  #     If not specified, no checksum comparison will be done. If specified,
+  #     Vagrant will compare the checksum of the downloaded box to this value
+  #     and error if they do not match. Checksum checking is only done when
+  #     Vagrant must download the box.
+  #
+  #     If this is specified, then `box_download_checksum_type` must also be
+  #     specified.
+  def_model_attribute :box_download_checksum
+
+  # @!attribute [rw] box_download_checksum_type
+  #   @return [String] The type of checksum specified by
+  #     `box_download_checksum` (if any). Supported values are currently `md5`,
+  #     `sha1`, and `sha256`.
+  def_model_attribute :box_download_checksum_type
+
+  # @!attribute [rw] box_download_client_cert
+  #   @return [String] Path to a client certificate to use when downloading the
+  #     box, if it is necessary. By default, no client certificate is used to
+  #     download the box.
+  def_model_attribute :box_download_client_cert
+
+  # @!attribute [rw] box_download_insecure
+  #   @return [Boolean] If `true`, then SSL certificates from the server will
+  #     not be verified. By default, if the URL is an HTTPS URL, then SSL certs
+  #     will be verified.
+  def_model_attribute :box_download_insecure
+
+  # @!attribute [rw] box_check_update
+  #   @return [Boolean] If true, Vagrant will check for updates to the
+  #     configured box on every `vagrant up`. If an update is found, Vagrant
+  #     will tell the user. By default this is `true`. Updates will only be
+  #     checked for boxes that properly support updates (boxes from Vagrant
+  #     Cloud or some other versioned box).
+  def_model_attribute :box_check_update
+
+  # @!attribute [rw] box_version
+  #   @return [String] The version of the box to use. This defaults to ">= 0"
+  #     (the latest version available). This can contain an arbitrary list of
+  #     constraints, separated by commas, such as: >= 1.0, < 1.5. When
+  #     constraints are given, Vagrant will use the latest available box
+  #     satisfying these constraints.
+  def_model_attribute :box_version
 
   # @!attribute [rw] name
   #   @return [String] The name of the instantiated box in this environment
@@ -113,8 +170,15 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
       global_config.vm.define(attr(:name)) do |config|
         vm_config = config.vm
 
-        with_attr(:box)      { |val| vm_config.box      = attr(:box)      }
-        with_attr(:box_url)  { |val| vm_config.box_url  = attr(:box_url)  }
+        with_attr(:box)                        { |val| vm_config.box = val }
+        with_attr(:box_url)                    { |val| vm_config.box_url = val }
+        with_attr(:box_download_checksum)      { |val| vm_config.box_download_checksum = val }
+        with_attr(:box_download_checksum_type) { |val| vm_config.box_download_checksum_type = val }
+        with_attr(:box_download_client_cert)   { |val| vm_config.box_download_client_cert = val }
+        with_attr(:box_download_insecure)      { |val| vm_config.box_download_insecure = val }
+        with_attr(:box_check_update)           { |val| vm_config.box_check_update = val }
+        with_attr(:box_version)                { |val| vm_config.box_version = val }
+
         with_attr(:hostname) { |val| vm_config.hostname = attr(:hostname) }
         with_attr(:guest)    { |val| vm_config.guest    = attr(:guest)    }
 
