@@ -11,6 +11,7 @@ module ConfigBuilder
     require 'config_builder/model/root'
 
     require 'config_builder/model/ssh'
+    require 'config_builder/model/winrm'
     #require 'config_builder/model/host'
 
     require 'config_builder/model/vm'
