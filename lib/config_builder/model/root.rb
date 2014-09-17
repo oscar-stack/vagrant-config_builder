@@ -9,6 +9,15 @@ class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
   def_model_delegator :ssh
   def_model_delegator :vms
 
+  # @!attribute [rw] winrm
+  #   @return [Hash<Symbol, Object>] The winrm configuration for all VMs
+  #   @example
+  #     >> config.winrm
+  #     => {
+  #           :username => 'administrator',
+  #           :password => 'vagrant',
+  #        }
+  def_model_delegator :winrm
 
   def initialize
     @defaults = {:vms => [], :vagrant => {}}
@@ -37,5 +46,12 @@ class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
 
   def eval_ssh(root_config)
 
+  end
+
+  def eval_winrm(root_config)
+    if attr(:winrm)
+      f = ConfigBuilder::Model::WinRM.new_from_hash(attr(:winrm))
+      f.call(root_config)
+    end
   end
 end
