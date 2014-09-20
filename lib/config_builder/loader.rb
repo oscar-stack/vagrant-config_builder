@@ -18,5 +18,6 @@ module ConfigBuilder
     end
 
     require 'config_builder/loader/yaml'
+    require 'config_builder/loader/yaml_erb'
   end
 end
