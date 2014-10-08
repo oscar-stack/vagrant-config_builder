@@ -1,6 +1,26 @@
 CHANGELOG
 =========
 
+0.12.0
+------
+
+2014-10-07
+
+This is a backwards feature release.
+
+  * (GH-22) Support for VMware Workstation providers.
+
+  * (GH-24) New YAML loader which pre-processes data using ERB to enable
+    dynamic interpolation of values.
+
+  * (GH-25) Support for VMware vSphere providers.
+
+  * (GH-28) Support for libvirt providers.
+
+  * Support for the file provisioner.
+
+Thanks to Nan Liu and Lukas Stanek for their contributions to this release.
+
 0.11.0
 ------
 
