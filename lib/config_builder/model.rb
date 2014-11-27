@@ -44,6 +44,7 @@ module ConfigBuilder
       require 'config_builder/model/provider/vmware_workstation'
       require 'config_builder/model/provider/libvirt'
       require 'config_builder/model/provider/vsphere'
+      require 'config_builder/model/provider/azure'
     end
 
     module Provisioner
