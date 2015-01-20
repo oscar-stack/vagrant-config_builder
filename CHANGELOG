@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+0.13.0
+------
+
+2015-01-20
+
+This is a backwards feature and bugfix release.
+
+  * (GH-31) Support for Azure provider.
+
+  * (GH-34) Properly load file provisioner
+
 0.12.0
 ------
 
