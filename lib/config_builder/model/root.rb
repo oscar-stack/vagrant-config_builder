@@ -8,6 +8,8 @@ class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
   def_model_delegator :vagrant
   def_model_delegator :vms
 
+  def_model_delegator :triggers
+
   # @!attribute [rw] ssh
   #   @return [Hash<Symbol, Object>] The ssh configuration for all VMs
   #   @example
@@ -50,6 +52,15 @@ class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
   def eval_vagrant(root_config)
     if attr(:vagrant).has_key? :host
       root_config.vagrant.host = attr(:vagrant)[:host]
+    end
+  end
+
+  def eval_triggers(root_config)
+    triggers = attr(:triggers) || []
+
+    triggers.each do |config|
+      f = ConfigBuilder::Model::Trigger.new_from_hash(config)
+      f.call(root_config)
     end
   end
 
