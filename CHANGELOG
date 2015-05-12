@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+0.14.0
+------
+
+2015-05-12
+
+This is a backwards compatible feature release
+
+  * (GH-35) Support for type arg in synced_folder parameter
+
+  * (GH-38) Add autostart capability to the vm model
+
 0.13.0
 ------
 
