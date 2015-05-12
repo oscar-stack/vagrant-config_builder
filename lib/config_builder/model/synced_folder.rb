@@ -24,6 +24,10 @@ class ConfigBuilder::Model::SyncedFolder < ConfigBuilder::Model::Base
   #   @return [Boolean] If the mount point should use NFS
   def_model_attribute :nfs
 
+  # @!attribute [rw] type
+  #   @return [String] The method for syncing folder to guest.
+  def_model_attribute :type
+
   def to_proc
     Proc.new do |vm_config|
       vm_config.synced_folder(attr(:host_path), attr(:guest_path), folder_opts)
@@ -37,6 +41,7 @@ class ConfigBuilder::Model::SyncedFolder < ConfigBuilder::Model::Base
     with_attr(:extra)   { |val| h[:extra]    = val }
     with_attr(:disabled) { |val| h[:disabled] = val }
     with_attr(:nfs)     { |val| h[:nfs]      = val }
+    with_attr(:type)    { |val| h[:type]     = val }
 
     h
   end
