@@ -155,6 +155,12 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #   commands to this box. Set to 'winrm' for Windows VMs.
   def_model_attribute :communicator
 
+  # @!attribute [rw] autostart
+  #   @return [Boolean] If true, vagrant will start the box on "vagrant up".
+  #   If false, vagrant must be given the box name explicitly or it will not
+  #   start.
+  def_model_attribute :autostart
+
   def initialize
     @defaults = {
       :providers        => [],
@@ -162,12 +168,13 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
       :forwarded_ports  => [],
       :private_networks => [],
       :synced_folders   => [],
+      :autostart        => true,
     }
   end
 
   def to_proc
     Proc.new do |global_config|
-      global_config.vm.define(attr(:name)) do |config|
+      global_config.vm.define(attr(:name), autostart: attr(:autostart)) do |config|
         vm_config = config.vm
 
         with_attr(:box)                        { |val| vm_config.box = val }
