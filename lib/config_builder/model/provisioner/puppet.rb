@@ -21,6 +21,10 @@ class ConfigBuilder::Model::Provisioner::Puppet < ConfigBuilder::Model::Base
   #   @return [String] An arbitrary set of arguments for the `puppet` command
   attr_accessor :options
 
+  # @!attribute [rw] run
+  #   @return [String] Defaults to not set. If set to 'always' will cause provisioner to always run.
+  def_model_attribute :run
+
   def to_proc
     Proc.new do |vm_config|
       vm_config.provision :puppet do |puppet_config|
@@ -29,6 +33,7 @@ class ConfigBuilder::Model::Provisioner::Puppet < ConfigBuilder::Model::Base
         with_attr(:module_path)    { |val| puppet_config.module_path    = val }
         with_attr(:facter)         { |val| puppet_config.facter         = val }
         with_attr(:options)        { |val| puppet_config.options        = val }
+        with_attr(:run)            { |val| puppet_config.run            = val }
       end
     end
   end

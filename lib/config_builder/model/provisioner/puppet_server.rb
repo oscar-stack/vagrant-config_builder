@@ -13,6 +13,10 @@ class ConfigBuilder::Model::Provisioner::PuppetServer < ConfigBuilder::Model::Ba
   #   @return [String]
   attr_accessor :options
 
+  # @!attribute [rw] run
+  #   @return [String] Defaults to not set. If set to 'always' will cause provisioner to always run.
+  attr_accessor :run
+
   def to_proc
     Proc.new do |vm_config|
       vm_config.provision :puppet_server do |puppet_config|
