@@ -18,7 +18,7 @@ class ConfigBuilder::Model::Provisioner::Shell < ConfigBuilder::Model::Base
   def_model_attribute :run
 
   def initialize
-    @defauts = {
+    @defaults = {
      :run => 'once',
     }
   end
