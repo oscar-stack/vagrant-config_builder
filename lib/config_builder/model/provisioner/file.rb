@@ -11,9 +11,19 @@ class ConfigBuilder::Model::Provisioner::File < ConfigBuilder::Model::Base
   #     determined by running vagrant ssh-config, and defaults to "vagrant".
   def_model_attribute :destination
 
+  # @!attribute [rw] run
+  #   @return [String] Defaults to not set. If set to 'always' will cause provisioner to always run.
+  attr_accessor :run
+
+  def initialize
+    @defaults = {
+     :run => 'once',
+    }
+  end
+
   def to_proc
     Proc.new do |vm_config|
-      vm_config.provision :file do |file_config|
+      vm_config.provision :file, run: attr(:run) do |file_config|
         with_attr(:source)        { |val| file_config.source = val }
         with_attr(:destination)   { |val| file_config.destination = val }
       end
