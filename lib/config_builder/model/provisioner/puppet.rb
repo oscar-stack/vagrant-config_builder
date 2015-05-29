@@ -31,9 +31,19 @@ class ConfigBuilder::Model::Provisioner::Puppet < ConfigBuilder::Model::Base
   #   @since 0.15.0
   attr_accessor :working_directory
 
+  # @!attribute [rw] run
+  #   @return [String] Defaults to not set. If set to 'always' will cause provisioner to always run.
+  attr_accessor :run
+
+  def initialize
+    @defaults = {
+     :run => 'once',
+    }
+  end
+
   def to_proc
     Proc.new do |vm_config|
-      vm_config.provision :puppet do |puppet_config|
+      vm_config.provision :puppet, run: attr(:run) do |puppet_config|
         with_attr(:manifests_path)    { |val| puppet_config.manifests_path    = val }
         with_attr(:manifest_file)     { |val| puppet_config.manifest_file     = val }
         with_attr(:module_path)       { |val| puppet_config.module_path       = val }
