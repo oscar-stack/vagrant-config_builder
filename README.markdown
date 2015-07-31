@@ -59,6 +59,7 @@ roles:
         manifests_path: 'tests'
         module_path: 'spec/fixtures/modules'
         manifest_file: <%= ENV['VAGRANT_MANIFEST'] || 'init.pp' %>
+        hiera_config_path: "hiera.yaml"
 ```
 
 #### config/roles.yaml
