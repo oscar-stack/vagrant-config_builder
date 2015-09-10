@@ -21,14 +21,24 @@ class ConfigBuilder::Model::Provisioner::Puppet < ConfigBuilder::Model::Base
   #   @return [String] An arbitrary set of arguments for the `puppet` command
   attr_accessor :options
 
+  # @!attribute [rw] hiera_config_path
+  #   @return [String] Path to the Hiera configuration file stored on the host
+  attr_accessor :hiera_config_path
+
+  # @!attribute [rw] working_directory
+  #   @return [String] Path in the guest that will be the working directory when Puppet is executed
+  attr_accessor :working_directory
+
   def to_proc
     Proc.new do |vm_config|
       vm_config.provision :puppet do |puppet_config|
-        with_attr(:manifests_path) { |val| puppet_config.manifests_path = val }
-        with_attr(:manifest_file)  { |val| puppet_config.manifest_file  = val }
-        with_attr(:module_path)    { |val| puppet_config.module_path    = val }
-        with_attr(:facter)         { |val| puppet_config.facter         = val }
-        with_attr(:options)        { |val| puppet_config.options        = val }
+        with_attr(:manifests_path)    { |val| puppet_config.manifests_path    = val }
+        with_attr(:manifest_file)     { |val| puppet_config.manifest_file     = val }
+        with_attr(:module_path)       { |val| puppet_config.module_path       = val }
+        with_attr(:facter)            { |val| puppet_config.facter            = val }
+        with_attr(:options)           { |val| puppet_config.options           = val }
+        with_attr(:hiera_config_path) { |val| puppet_config.hiera_config_path = val }
+        with_attr(:working_directory) { |val| puppet_config.working_directory = val }
       end
     end
   end
