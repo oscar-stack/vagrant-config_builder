@@ -19,5 +19,6 @@ Gem::Specification.new do |gem|
 
   gem.add_runtime_dependency 'deep_merge', '~> 1.0.0'
 
+  # Pin to 2.14.x for compatibility with vagrant-spec.
   gem.add_development_dependency 'rspec', '~> 2.14.0'
 end

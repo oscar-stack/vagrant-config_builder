@@ -3,6 +3,8 @@ Vagrant Config Builder
 
 Configure and manage your Vagrant environments with data.
 
+[![Build Status](https://travis-ci.org/oscar-stack/vagrant-config_builder.svg?branch=master)](https://travis-ci.org/oscar-stack/vagrant-config_builder)
+
 Synopsis
 --------
 
