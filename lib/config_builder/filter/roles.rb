@@ -57,17 +57,12 @@ class ConfigBuilder::Filter::Roles
   # @param old_vm [Hash]
   #
   # @return [Hash] The filtered VM
-  def filter_vm(old_vm)
-    role_list  = old_vm.delete('roles')
-    node_stack = roles_by_name(role_list)
+  def filter_vm(vm)
+    node_stack = roles_by_name(vm.delete('roles'))
 
-    node_stack << old_vm
-
-    new_vm = node_stack.inject({}) do |accumulator, role|
-      merge_nodes(accumulator, role)
+    node_stack.inject(vm) do |accumulator, role|
+      merge_nodes!(accumulator, role)
     end
-
-    new_vm
   end
 
   # Fetch the role associated with the given name
@@ -110,16 +105,18 @@ class ConfigBuilder::Filter::Roles
 
   private
 
-  # Merge two node hash structures, with values in `right` overwriting values
-  # in `left`.
+  # Merge two hashes of VM settings
+  #
+  # This function merges all settings from `right` into `left` and returns
+  # `left` as a mutated value. Any scalar settings, such as `box`, present in
+  # `left` will be preserved. Array settings, such as `provisioners` present in
+  # `right` will be prepended to `left` such that they are run earlier.
   #
   # @param left  [Hash]
   # @param right [Hash]
   #
-  # @return [Hash]
-  def merge_nodes(left, right)
-    retval = right.clone
-
+  # @return [Hash] The left hash, mutated.
+  def merge_nodes!(left, right)
     array_keys = %w[
       providers
       provisioners
@@ -131,19 +128,20 @@ class ConfigBuilder::Filter::Roles
     ]
 
     array_keys.each do |key|
-      if (left[key] and right[key])
-        retval[key] += left[key]
-      elsif left[key]
-        retval[key] = left[key].clone
-      end
+      next unless right.has_key?(key)
+
+      left[key] ||= []
+      left[key].unshift(*right[key])
     end
 
     single_keys = %w[provider box name communicator]
 
     single_keys.each do |key|
-      retval[key] = left[key] if left[key]
+      next unless right.has_key?(key)
+
+      left[key] ||= right[key]
     end
 
-    retval
+    left
   end
 end

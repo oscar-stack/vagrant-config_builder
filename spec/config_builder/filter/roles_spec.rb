@@ -40,7 +40,10 @@ describe ConfigBuilder::Filter::Roles do
         'private_networks' => [
           {'ip' => '1.2.3.4'}
         ]
-      }
+      },
+      'windows' => {
+        'communicator' => 'winrm',
+      },
     }
   end
 
@@ -168,6 +171,32 @@ describe ConfigBuilder::Filter::Roles do
         ]
 
         expect(filtered_vm['provisioners']).to eq expected_prov
+      end
+    end
+
+    context 'when vm configuration overlaps with roles' do
+      let(:vms) do
+        [{
+          'name'         => 'master',
+          'roles'        => [ 'shell-provisioner', 'windows' ],
+          'communicator' => 'ssh',
+          'provisioners' => [
+            {'type' => 'foo', 'parameter' => 'bar', }
+          ],
+        }]
+      end
+
+      it 'preserves single_keys set on the vm' do
+        expect(filtered_vm['communicator']).to eq 'ssh'
+      end
+
+      it 'merges array_keys set on the vm last' do
+        expected_prov = {
+          'type'      => 'foo',
+          'parameter' => 'bar',
+        }
+
+        expect(filtered_vm['provisioners'].last).to eq expected_prov
       end
     end
 
