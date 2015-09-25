@@ -70,7 +70,7 @@ describe ConfigBuilder::Filter::Roles do
     end
   end
 
-  describe 'removing the role' do
+  describe 'loading configured roles' do
     let(:config) do
       {
         'vms' => [{'name' => 'master'}],
@@ -82,14 +82,20 @@ describe ConfigBuilder::Filter::Roles do
       subject.set_config(dup(config))
     end
 
-    it 'strips out the roles key' do
+    it 'strips out the roles from top-level configuration' do
       output = subject.run
       expect(output).to_not have_key 'roles'
     end
   end
 
-  describe 'and a vm with no roles' do
-    let(:vms) { [{'name' => 'master'}] }
+  describe 'operating on a single vm' do
+    let(:vms) do
+      [{
+        'name'  => 'master',
+        'foo'   => 'bar',
+        'roles' => [ 'shell-provisioner', 'folders-12' ],
+      }]
+    end
 
     let(:config) do
       {
@@ -98,39 +104,34 @@ describe ConfigBuilder::Filter::Roles do
       }
     end
 
+    let(:filtered_vm) do
+      output = subject.run
+      output['vms'][0]
+    end
+
     before do
       subject.set_config(dup(config))
     end
 
-    it "doesn't alter the vm" do
-      output = subject.run
-      expect(output['vms']).to eq vms
+    it "removes the 'roles' key if present" do
+      expect(filtered_vm).to_not have_key 'roles'
     end
-  end
 
-  describe 'and one vm' do
-    describe 'with one role' do
-      let(:vms) { [{'name' => 'master', 'roles' => 'shell-provisioner'}] }
+    it 'preserves top-level configuration' do
+      expect(filtered_vm).to have_key 'foo'
+    end
 
-      let(:config) do
-        {
-          'vms'   => vms,
-          'roles' => roles,
-        }
-      end
+    context 'with no roles' do
+      let(:vms) { [{'name' => 'master'}] }
 
-      before do
-        subject.set_config(dup(config))
-      end
-
-      let(:filtered_vm) do
+      it "doesn't alter the vm" do
         output = subject.run
-        output['vms'][0]
+        expect(output['vms']).to eq vms
       end
+    end
 
-      it "removes the 'roles' key" do
-        expect(filtered_vm).to_not have_key 'roles'
-      end
+    context 'with roles set to a single string' do
+      let(:vms) { [{'name' => 'master', 'roles' => 'shell-provisioner'}] }
 
       it 'applies the role' do
         expected = [{
@@ -142,45 +143,34 @@ describe ConfigBuilder::Filter::Roles do
       end
     end
 
-    describe 'with two roles' do
+    context 'with roles set to an array' do
       let(:vms) do
         [{
           'name'  => 'master',
-          'roles' => ['shell-provisioner', 'folders-12'],
+          'roles' => [
+            'folders-12',
+            'puppet-provisioner',
+            'shell-provisioner',
+          ]
         }]
-      end
-
-      let(:config) do
-        {
-          'vms'   => vms,
-          'roles' => roles,
-        }
-      end
-
-      before do
-        subject.set_config(dup(config))
-      end
-
-      let(:filtered_vm) do
-        output = subject.run
-        output['vms'][0]
       end
 
       it 'applies all of the roles' do
-        expected_prov = [{
-          'type'   => 'shell',
-          'inline' => '/usr/bin/sl',
-        }]
+        expect(filtered_vm).to have_key 'provisioners'
+        expect(filtered_vm).to have_key 'synced_folders'
+      end
 
-        expected_folder = [
-          {'guest_path' => '/guest-1', 'host_path' => './host-1'},
-          {'guest_path' => '/guest-2', 'host_path' => './host-2'},
+      it 'merges attribute arrays in reverse order' do
+        expected_prov = [
+          {'type'   => 'shell', 'inline' => '/usr/bin/sl'},
+          {'type' => 'puppet', 'manifest' => 'sl.pp'},
+          {'type' => 'puppet', 'manifest' => 'starwars.pp'},
         ]
 
         expect(filtered_vm['provisioners']).to eq expected_prov
-        expect(filtered_vm['synced_folders']).to eq expected_folder
       end
     end
+
   end
 
   describe "with multiple VMs and shared roles" do
