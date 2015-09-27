@@ -9,3 +9,7 @@ en:
       duplicate_entry: |-
         The class registry %{registry} already has a class registered with identifier %{identifier}
         and cannot replace the existing entry.
+    model:
+      vm:
+        provider_is_deprecated: |-
+          The provider attribute, set on vm %{name}, is deprecated and will be removed in an upcoming release. Use the providers attribute instead.

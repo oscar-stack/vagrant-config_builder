@@ -13,6 +13,8 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #           :name => 'tiny-tina',
   #           :gui  => false,
   #        }
+  #
+  #   @deprecated Use {#providers} instead.
   def_model_delegator :provider
 
   # @!attribute [rw] providers
@@ -214,6 +216,10 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
 
   def eval_provider(vm_config)
     if attr(:provider)
+      ConfigBuilder.logger.warn {
+        I18n.t('config_builder.model.vm.provider_is_deprecated', :name => attr(:name))
+      }
+
       p = ConfigBuilder::Model::Provider.new_from_hash(attr(:provider))
       p.call(vm_config)
     end
