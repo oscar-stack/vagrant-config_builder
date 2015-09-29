@@ -1,6 +1,25 @@
 CHANGELOG
 =========
 
+0.15.0
+------
+
+2015-09-28
+
+This is a feature release with an incompatible bugfix.
+
+  * (GH-44) Roles no longer preempt specific VM configuration.  This means that
+    roles no longer override values explicitly set on VMs and provisioners set
+    by VMs run after those set by roles. This change is considered to be a bug
+    fix, but will break any configuration that relies on existing behavior.
+
+  * (GH-43) Add basic support for the vagrant-aws provider.
+
+  * (GH-42) The Puppet provisioner now supports Hiera configuration options.
+
+  * (GH-47) The single `provisioner` setting for VMs is now deprecated and will
+    be removed in version 1.0.0. Use the `provisioners` setting instead.
+
 0.14.0
 ------
 

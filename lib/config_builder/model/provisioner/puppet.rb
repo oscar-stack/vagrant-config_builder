@@ -23,10 +23,12 @@ class ConfigBuilder::Model::Provisioner::Puppet < ConfigBuilder::Model::Base
 
   # @!attribute [rw] hiera_config_path
   #   @return [String] Path to the Hiera configuration file stored on the host
+  #   @since 0.15.0
   attr_accessor :hiera_config_path
 
   # @!attribute [rw] working_directory
   #   @return [String] Path in the guest that will be the working directory when Puppet is executed
+  #   @since 0.15.0
   attr_accessor :working_directory
 
   def to_proc

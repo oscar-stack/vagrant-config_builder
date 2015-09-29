@@ -1,3 +1,7 @@
+# Provider support for Vagrant-AWS
+#
+# @see https://github.com/mitchellh/vagrant-aws/blob/master/README.md#configuration
+# @since 0.15.0
 class ConfigBuilder::Model::Provider::Aws < ConfigBuilder::Model::Base
 
   def_model_attribute :access_key_id
