@@ -124,7 +124,6 @@ class ConfigBuilder::Filter::Roles
       forwarded_ports
       private_networks
       public_networks
-      guest
     ]
 
     array_keys.each do |key|
@@ -134,7 +133,7 @@ class ConfigBuilder::Filter::Roles
       left[key].unshift(*right[key])
     end
 
-    single_keys = %w[provider box name communicator]
+    single_keys = %w[provider box name communicator guest]
 
     single_keys.each do |key|
       next unless right.has_key?(key)
