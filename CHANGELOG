@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+0.15.1
+------
+
+2015-10-06
+
+This is a backwards compatible bugfix release.
+
+  * The `guest` attribute of a VMs is no longer incorrectly merged as an array
+    value.
+
+
 0.15.0
 ------
 
