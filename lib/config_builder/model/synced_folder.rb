@@ -11,6 +11,10 @@ class ConfigBuilder::Model::SyncedFolder < ConfigBuilder::Model::Base
   #   @return [String] The guest file path to be used as the mount point
   def_model_attribute :guest_path
 
+  # @!attribute [rw] create
+  #   @return [Boolean] If true, the host path will be created if it does not exist
+  def_model_attribute :create
+
   # @!attribute [rw] extra
   #   A set of arbitrary options to pass to the virtualbox mount command.
   #   @return [String]
@@ -38,6 +42,7 @@ class ConfigBuilder::Model::SyncedFolder < ConfigBuilder::Model::Base
 
   def folder_opts
     h = {}
+    with_attr(:create)  { |val| h[:create]   = val }
     with_attr(:extra)   { |val| h[:extra]    = val }
     with_attr(:disabled) { |val| h[:disabled] = val }
     with_attr(:nfs)     { |val| h[:nfs]      = val }
