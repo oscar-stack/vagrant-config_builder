@@ -46,6 +46,8 @@ module ConfigBuilder
       require 'config_builder/model/provider/vsphere'
       require 'config_builder/model/provider/azure'
       require 'config_builder/model/provider/aws'
+      require 'config_builder/model/provider/openstack'
+      require 'config_builder/model/provider/openstack_plugin'
     end
 
     module Provisioner
