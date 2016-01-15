@@ -46,6 +46,7 @@ module ConfigBuilder
       require 'config_builder/model/provider/vsphere'
       require 'config_builder/model/provider/azure'
       require 'config_builder/model/provider/aws'
+      require 'config_builder/model/provider/softlayer'
     end
 
     module Provisioner
