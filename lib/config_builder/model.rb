@@ -48,6 +48,7 @@ module ConfigBuilder
       require 'config_builder/model/provider/aws'
       require 'config_builder/model/provider/openstack'
       require 'config_builder/model/provider/openstack_plugin'
+      require 'config_builder/model/provider/softlayer'
     end
 
     module Provisioner
