@@ -35,6 +35,10 @@ class ConfigBuilder::Model::SSH < ConfigBuilder::Model::Base
   #     option.
   def_model_attribute :guest_port
 
+  # @!attribute [rw] keep_alive
+  #   @return [Boolean]
+  def_model_attribute :keep_alive
+
   # @!attribute [rw] private_key_path
   #   @return [String] The path to the private key to use to SSH into the guest
   #     machine. By default this is the insecure private key that ships with
@@ -57,6 +61,11 @@ class ConfigBuilder::Model::SSH < ConfigBuilder::Model::Base
   #   @return [Boolean] If `true`, X11 forwarding over SSH connections is
   #     enabled. Defaults to `false`.
   def_model_attribute :forward_x11
+
+  # @!attribute [rw] forward_env
+  #   @return [Array<String>] An array of host environment variables to forward
+  #     to the guest.
+  def_model_attribute :forward_env
 
   # @!attribute [rw] insert_key
   #   @return [Boolean] If `true`, Vagrant will automatically insert an insecure
@@ -89,22 +98,31 @@ class ConfigBuilder::Model::SSH < ConfigBuilder::Model::Base
   #     Vagrant.
   def_model_attribute :shell
 
+  # @!attribute [rw] sudo_command
+  #   @return [String] The command to use when executing a command with sudo.
+  #     This defaults to `sudo -E -H %c`. The `%c` will be replaced by the
+  #     command that is being executed.
+  def_model_attribute :sudo_command
+
   def to_proc
     Proc.new do |global_config|
       ssh = global_config.ssh
 
-      with_attr(:username)         { |val| ssh.username = val }
-      with_attr(:password)         { |val| ssh.password = val }
-      with_attr(:host)             { |val| ssh.host = val }
-      with_attr(:port)             { |val| ssh.port = val }
-      with_attr(:guest_port)       { |val| ssh.guest_port = val }
+      with_attr(:username)         { |val| ssh.username         = val }
+      with_attr(:password)         { |val| ssh.password         = val }
+      with_attr(:host)             { |val| ssh.host             = val }
+      with_attr(:port)             { |val| ssh.port             = val }
+      with_attr(:guest_port)       { |val| ssh.guest_port       = val }
+      with_attr(:keep_alive)       { |val| ssh.keep_alive       = val }
       with_attr(:private_key_path) { |val| ssh.private_key_path = val }
-      with_attr(:forward_agent)    { |val| ssh.forward_agent = val }
-      with_attr(:forward_x11)      { |val| ssh.forward_x11 = val }
-      with_attr(:insert_key)       { |val| ssh.insert_key = val }
-      with_attr(:proxy_command)    { |val| ssh.proxy_command = val }
-      with_attr(:pty)              { |val| ssh.pty = val }
-      with_attr(:shell)            { |val| ssh.shell = val }
+      with_attr(:forward_agent)    { |val| ssh.forward_agent    = val }
+      with_attr(:forward_x11)      { |val| ssh.forward_x11      = val }
+      with_attr(:forward_env)      { |val| ssh.forward_env      = val }
+      with_attr(:insert_key)       { |val| ssh.insert_key       = val }
+      with_attr(:proxy_command)    { |val| ssh.proxy_command    = val }
+      with_attr(:pty)              { |val| ssh.pty              = val }
+      with_attr(:shell)            { |val| ssh.shell            = val }
+      with_attr(:sudo_command)     { |val| ssh.sudo_command     = val }
     end
   end
 end
