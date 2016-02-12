@@ -21,16 +21,11 @@ class ConfigBuilder::Model::Network::PrivateNetwork < ConfigBuilder::Model::Base
 
   def to_proc
     Proc.new do |vm_config|
-      vm_config.network(:private_network, private_network_opts)
+      # NOTE: @attrs _must_ be used here to preserve compatibility with the
+      # vagrant-auto_network plugin.
+      # FIXME: Re-factor attribute handling so that this sort of magic isn't
+      # necessary.
+      vm_config.network(:private_network, @attrs)
     end
-  end
-
-  def private_network_opts
-    h = {}
-    with_attr(:ip)          { |val| h[:ip]          = val }
-    with_attr(:netmask)     { |val| h[:netmask]     = val }
-    with_attr(:type)        { |val| h[:type]        = val }
-    with_attr(:auto_config) { |val| h[:auto_config] = val }
-    h
   end
 end
