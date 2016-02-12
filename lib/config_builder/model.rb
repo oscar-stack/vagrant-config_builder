@@ -10,6 +10,7 @@ module ConfigBuilder
 
     require 'config_builder/model/root'
 
+    require 'config_builder/model/nfs'
     require 'config_builder/model/ssh'
     require 'config_builder/model/winrm'
     #require 'config_builder/model/host'
@@ -24,6 +25,7 @@ module ConfigBuilder
     module Network
       require 'config_builder/model/network/forwarded_port'
       require 'config_builder/model/network/private_network'
+      require 'config_builder/model/network/public_network'
     end
 
     module Provider

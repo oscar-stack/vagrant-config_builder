@@ -18,6 +18,16 @@ class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
   #        }
   def_model_delegator :ssh
 
+  # @!attribute [rw] nfs
+  #   @return [Hash<Symbol, Object>] The nfs configuration for all VMs
+  #   @example
+  #     >> config.nfs
+  #     => {
+  #           :nfs_export  => true,
+  #           :nfs_version => 4
+  #        }
+  def_model_delegator :nfs
+
   # @!attribute [rw] winrm
   #   @return [Hash<Symbol, Object>] The winrm configuration for all VMs
   #   @example
@@ -50,6 +60,13 @@ class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
   def eval_vagrant(root_config)
     if attr(:vagrant).has_key? :host
       root_config.vagrant.host = attr(:vagrant)[:host]
+    end
+  end
+
+  def eval_nfs(root_config)
+    with_attr(:nfs) do |nfs_config|
+      f = ConfigBuilder::Model::NFS.new_from_hash(nfs_config)
+      f.call(root_config)
     end
   end
 

@@ -64,6 +64,17 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #        ]
   def_model_delegator :private_networks
 
+  # @!attribute [rw] public_networks
+  #   @return [Array<Hash<Symbol, Object>>] A collection of IP address network
+  #     settings.
+  #   @example
+  #     >> vm.public_networks
+  #     => [
+  #           {:ip => '10.20.4.1'},
+  #           {:bridge: "en1: Wi-Fi (AirPort)"},
+  #        ]
+  def_model_delegator :public_networks
+
   # @!attribute [rw] synced_folders
   #   @return [Array<Hash<Symbol, Object>>]
   #   @example
@@ -75,15 +86,42 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #
   def_model_delegator :synced_folders
 
-  # @!attribute [rw] guest
-  #   @return [String] The guest type to use for this VM
-  def_model_attribute :guest
+  # @!attribute [rw] name
+  #   @return [String] The name of the instantiated box in this environment.
+  def_model_attribute :name
+
+  # @!attribute [rw] autostart
+  #   @return [Boolean] If true, vagrant will start the box on "vagrant up".
+  #   If false, vagrant must be given the box name explicitly or it will not
+  #   start.
+  def_model_attribute :autostart
+
+  # @!attribute [rw] allowed_synced_folder_types
+  #   @return [Array<String>]
+  def_model_attribute :allowed_synced_folder_types
+
+  # @!attribute [rw] base_mac
+  #   @return [String] MAC address of the NAT device.
+  def_model_attribute :base_mac
+
+  # @!attribute [rw] autostart
+  #   @return [Fixnum] The time in seconds that Vagrant will wait for the machine
+  #     to boot and be accessible. By default this is 300 seconds.
+  def_model_attribute :boot_timeout
 
   # @!attribute [rw] box
   #   @return [String] This configures what box the machine will be brought up
   #     against. The value here should be the name of an installed box or a
   #     shorthand name of a box in Vagrant Cloud.
   def_model_attribute :box
+
+  # @!attribute [rw] box_check_update
+  #   @return [Boolean] If true, Vagrant will check for updates to the
+  #     configured box on every `vagrant up`. If an update is found, Vagrant
+  #     will tell the user. By default this is `true`. Updates will only be
+  #     checked for boxes that properly support updates (boxes from Vagrant
+  #     Cloud or some other versioned box).
+  def_model_attribute :box_check_update
 
   # @!attribute [rw] box_url
   #   @return [String, Array<String>] The URL that the configured box can be
@@ -98,6 +136,29 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #     The URLs can also be local files by using the file:// scheme. For
   #     example: "file:///tmp/test.box".
   def_model_attribute :box_url
+
+  # @!attribute [rw] box_server_url
+  #   @return [String]
+  def_model_attribute :box_server_url
+
+  # @!attribute [rw] box_version
+  #   @return [String] The version of the box to use. This defaults to ">= 0"
+  #     (the latest version available). This can contain an arbitrary list of
+  #     constraints, separated by commas, such as: >= 1.0, < 1.5. When
+  #     constraints are given, Vagrant will use the latest available box
+  #     satisfying these constraints.
+  def_model_attribute :box_version
+
+  # @!attribute [rw] box_download_ca_cert
+  #   @return [String] Path to a CA cert bundle to use when downloading a box
+  #     directly. By default, Vagrant will use the Mozilla CA cert bundle.
+  def_model_attribute :box_download_ca_cert
+
+  # @!attribute [rw] box_download_ca_path
+  #   @return [String] Path to a directory containing CA certificates for
+  #     downloading a box directly. By default, Vagrant will use the Mozilla CA
+  #     cert bundle.
+  def_model_attribute :box_download_ca_path
 
   # @!attribute [rw] box_download_checksum
   #   @return [String] The checksum of the box specified by `box_url`.
@@ -128,40 +189,42 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #     will be verified.
   def_model_attribute :box_download_insecure
 
-  # @!attribute [rw] box_check_update
-  #   @return [Boolean] If true, Vagrant will check for updates to the
-  #     configured box on every `vagrant up`. If an update is found, Vagrant
-  #     will tell the user. By default this is `true`. Updates will only be
-  #     checked for boxes that properly support updates (boxes from Vagrant
-  #     Cloud or some other versioned box).
-  def_model_attribute :box_check_update
-
-  # @!attribute [rw] box_version
-  #   @return [String] The version of the box to use. This defaults to ">= 0"
-  #     (the latest version available). This can contain an arbitrary list of
-  #     constraints, separated by commas, such as: >= 1.0, < 1.5. When
-  #     constraints are given, Vagrant will use the latest available box
-  #     satisfying these constraints.
-  def_model_attribute :box_version
-
-  # @!attribute [rw] name
-  #   @return [String] The name of the instantiated box in this environment
-  def_model_attribute :name
-
-  # @!attribute [rw] hostname
-  #   @return [String] The hostname the machine should have.
-  def_model_attribute :hostname
+  # @!attribute [rw] box_download_location_trusted
+  #   @return [Boolean] If ´true´, then all HTTP redirects will be treated as
+  #     trusted. That means credentials used for initial URL will be used for all
+  #     subsequent redirects. By default, redirect locations are untrusted so
+  #     credentials (if specified) used only for initial HTTP request.
+  def_model_attribute :box_download_location_trusted
 
   # @!attribute [rw] communicator
   #   @return [String] The name of the communicator to use when sending
   #   commands to this box. Set to 'winrm' for Windows VMs.
   def_model_attribute :communicator
 
-  # @!attribute [rw] autostart
-  #   @return [Boolean] If true, vagrant will start the box on "vagrant up".
-  #   If false, vagrant must be given the box name explicitly or it will not
-  #   start.
-  def_model_attribute :autostart
+  # @!attribute [rw] graceful_halt_timeout
+  #   @return [Fixnum] The time in seconds that Vagrant will wait for the machine
+# to
+  #     gracefully halt when vagrant halt is called. Defaults to 60 seconds.
+  def_model_attribute :graceful_halt_timeout
+
+  # @!attribute [rw] guest
+  #   @return [String] The guest type to use for this VM.
+  def_model_attribute :guest
+
+  # @!attribute [rw] hostname
+  #   @return [String] The hostname the machine should have.
+  def_model_attribute :hostname
+
+  # @!attribute [rw] post_up_message
+  #   @return [String] A message to show after vagrant up. This will be shown to
+  #     the user and is useful for containing instructions such as how to access
+  #     various components of the development environment.
+  def_model_attribute :post_up_message
+
+  # @!attribute [rw] usable_port_range
+  #   @return [String] A range of ports Vagrant can use for handling port
+  #     collisions and such. Defaults to 2200..2250.
+  def_model_attribute :usable_port_range
 
   def initialize
     @defaults = {
@@ -169,6 +232,7 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
       :provisioners     => [],
       :forwarded_ports  => [],
       :private_networks => [],
+      :public_networks  => [],
       :synced_folders   => [],
       :autostart        => true,
     }
@@ -179,19 +243,29 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
       global_config.vm.define(attr(:name), autostart: attr(:autostart)) do |config|
         vm_config = config.vm
 
-        with_attr(:box)                        { |val| vm_config.box = val }
-        with_attr(:box_url)                    { |val| vm_config.box_url = val }
-        with_attr(:box_download_checksum)      { |val| vm_config.box_download_checksum = val }
-        with_attr(:box_download_checksum_type) { |val| vm_config.box_download_checksum_type = val }
-        with_attr(:box_download_client_cert)   { |val| vm_config.box_download_client_cert = val }
-        with_attr(:box_download_insecure)      { |val| vm_config.box_download_insecure = val }
-        with_attr(:box_check_update)           { |val| vm_config.box_check_update = val }
-        with_attr(:box_version)                { |val| vm_config.box_version = val }
+        with_attr(:allowed_synced_folder_types)   { |val| vm_config.allowed_synced_folder_types   = val }
+        with_attr(:base_mac)                      { |val| vm_config.base_mac                      = val }
+        with_attr(:boot_timeout)                  { |val| vm_config.boot_timeout                  = val }
 
-        with_attr(:hostname) { |val| vm_config.hostname = attr(:hostname) }
-        with_attr(:guest)    { |val| vm_config.guest    = attr(:guest)    }
+        with_attr(:box)                           { |val| vm_config.box                           = val }
+        with_attr(:box_check_update)              { |val| vm_config.box_check_update              = val }
+        with_attr(:box_url)                       { |val| vm_config.box_url                       = val }
+        with_attr(:box_server_url)                { |val| vm_config.box_server_url                = val }
+        with_attr(:box_version)                   { |val| vm_config.box_version                   = val }
+        with_attr(:box_download_ca_cert)          { |val| vm_config.box_download_ca_cert          = val }
+        with_attr(:box_download_ca_path)          { |val| vm_config.box_download_ca_path          = val }
+        with_attr(:box_download_checksum)         { |val| vm_config.box_download_checksum         = val }
+        with_attr(:box_download_checksum_type)    { |val| vm_config.box_download_checksum_type    = val }
+        with_attr(:box_download_client_cert)      { |val| vm_config.box_download_client_cert      = val }
+        with_attr(:box_download_insecure)         { |val| vm_config.box_download_insecure         = val }
+        with_attr(:box_download_location_trusted) { |val| vm_config.box_download_location_trusted = val }
 
-        with_attr(:communicator) { |val| vm_config.communicator = attr(:communicator) }
+        with_attr(:communicator)                  { |val| vm_config.communicator                  = val }
+        with_attr(:graceful_halt_timeout)         { |val| vm_config.graceful_halt_timeout         = val }
+        with_attr(:guest)                         { |val| vm_config.guest                         = val }
+        with_attr(:hostname)                      { |val| vm_config.hostname                      = val }
+        with_attr(:post_up_message)               { |val| vm_config.post_up_message               = val }
+        with_attr(:usable_port_range)             { |val| vm_config.usable_port_range             = Range.new(*val.split('..').map(&:to_i)) }
 
         eval_models(vm_config)
       end
@@ -228,6 +302,13 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   def eval_private_networks(vm_config)
     attr(:private_networks).each do |hash|
       n = ConfigBuilder::Model::Network::PrivateNetwork.new_from_hash(hash)
+      n.call(vm_config)
+    end
+  end
+
+  def eval_public_networks(vm_config)
+    attr(:public_networks).each do |hash|
+      n = ConfigBuilder::Model::Network::PublicNetwork.new_from_hash(hash)
       n.call(vm_config)
     end
   end
