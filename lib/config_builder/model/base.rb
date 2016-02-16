@@ -70,7 +70,6 @@ class ConfigBuilder::Model::Base
   def attr(identifier)
     @attrs[identifier]
   end
-  private :attr
 
   # Conditionally evaluate a block with a model attribute if it's defined
   #
@@ -85,7 +84,6 @@ class ConfigBuilder::Model::Base
       yield val
     end
   end
-  private :with_attr
 
   class << self
 
