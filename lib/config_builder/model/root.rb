@@ -7,6 +7,7 @@ class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
 
   def_model_delegator :vagrant
   def_model_delegator :vms
+  def_model_delegator :vm_defaults
 
   # @!attribute [rw] ssh
   #   @return [Hash<Symbol, Object>] The ssh configuration for all VMs
@@ -50,10 +51,19 @@ class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
 
   private
 
+  def eval_vm_defaults(root_config)
+    with_attr(:vm_defaults) do |hash|
+      v = ConfigBuilder::Model::VM.new_from_hash(hash)
+      v.call(root_config)
+    end
+  end
+
   def eval_vms(root_config)
     attr(:vms).each do |hash|
       v = ConfigBuilder::Model::VM.new_from_hash(hash)
-      v.call(root_config)
+      root_config.vm.define(v.instance_id, v.instance_options) do |vm_config|
+        v.call(vm_config)
+      end
     end
   end
 

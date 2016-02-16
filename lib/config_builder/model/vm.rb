@@ -88,13 +88,13 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
 
   # @!attribute [rw] name
   #   @return [String] The name of the instantiated box in this environment.
-  def_model_attribute :name
+  def_model_id :name
 
   # @!attribute [rw] autostart
   #   @return [Boolean] If true, vagrant will start the box on "vagrant up".
   #   If false, vagrant must be given the box name explicitly or it will not
   #   start.
-  def_model_attribute :autostart
+  def_model_option :autostart
 
   # @!attribute [rw] allowed_synced_folder_types
   #   @return [Array<String>]
@@ -239,37 +239,18 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   end
 
   def to_proc
-    Proc.new do |global_config|
-      global_config.vm.define(attr(:name), autostart: attr(:autostart)) do |config|
-        vm_config = config.vm
+    Proc.new do |config|
+      vm_config = config.vm
 
-        with_attr(:allowed_synced_folder_types)   { |val| vm_config.allowed_synced_folder_types   = val }
-        with_attr(:base_mac)                      { |val| vm_config.base_mac                      = val }
-        with_attr(:boot_timeout)                  { |val| vm_config.boot_timeout                  = val }
-
-        with_attr(:box)                           { |val| vm_config.box                           = val }
-        with_attr(:box_check_update)              { |val| vm_config.box_check_update              = val }
-        with_attr(:box_url)                       { |val| vm_config.box_url                       = val }
-        with_attr(:box_server_url)                { |val| vm_config.box_server_url                = val }
-        with_attr(:box_version)                   { |val| vm_config.box_version                   = val }
-        with_attr(:box_download_ca_cert)          { |val| vm_config.box_download_ca_cert          = val }
-        with_attr(:box_download_ca_path)          { |val| vm_config.box_download_ca_path          = val }
-        with_attr(:box_download_checksum)         { |val| vm_config.box_download_checksum         = val }
-        with_attr(:box_download_checksum_type)    { |val| vm_config.box_download_checksum_type    = val }
-        with_attr(:box_download_client_cert)      { |val| vm_config.box_download_client_cert      = val }
-        with_attr(:box_download_insecure)         { |val| vm_config.box_download_insecure         = val }
-        with_attr(:box_download_location_trusted) { |val| vm_config.box_download_location_trusted = val }
-
-        with_attr(:communicator)                  { |val| vm_config.communicator                  = val }
-        with_attr(:graceful_halt_timeout)         { |val| vm_config.graceful_halt_timeout         = val }
-        with_attr(:guest)                         { |val| vm_config.guest                         = val }
-        with_attr(:hostname)                      { |val| vm_config.hostname                      = val }
-        with_attr(:post_up_message)               { |val| vm_config.post_up_message               = val }
-        with_attr(:usable_port_range)             { |val| vm_config.usable_port_range             = Range.new(*val.split('..').map(&:to_i)) }
-
-        eval_models(vm_config)
-      end
+      configure!(vm_config)
+      eval_models(vm_config)
     end
+  end
+
+
+  # @private
+  def configure_usable_port_range(config, val)
+    config.usable_port_range = Range.new(*val.split('..').map(&:to_i))
   end
 
   private

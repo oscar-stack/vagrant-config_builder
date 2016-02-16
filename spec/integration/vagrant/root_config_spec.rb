@@ -70,4 +70,20 @@ describe 'Vagrant Integration: ConfigBuilder::Model::Root' do
     end
   end
 
+  context 'when configured with VM defaults' do
+    let(:config_data) {
+      {'vm_defaults' =>
+        {
+          'box'  => 'somebox',
+        }
+      }
+    }
+
+    subject { root_config.vm }
+
+    it 'sets Vagrant config.vm parameters' do
+      expect(subject.box).to eq 'somebox'
+    end
+  end
+
 end
