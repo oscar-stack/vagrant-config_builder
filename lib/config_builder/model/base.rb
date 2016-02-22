@@ -23,6 +23,38 @@
 # Implementing classes do not need to inherit from ConfigBuilder::Model::Base,
 # but it makes life easier.
 class ConfigBuilder::Model::Base
+  class << self
+    # Define a new model attribute
+    #
+    # Model attributes are used to configure Vagrant objects.
+    #
+    # @param identifier [Symbol]
+    #
+    # @return [Symbol] The identifier passed to `def_model_attribute`.
+    def def_model_attribute(identifier)
+      @model_attributes ||= []
+
+      @model_attributes << identifier
+
+      identifier
+    end
+
+    # Return all attributes defined for this model
+    #
+    # This method also returns inherited attributes.
+    #
+    # @return [Array<Symbol>] A list of model atttributes.
+    def model_attributes
+      @model_attributes ||= []
+
+      if (self < ::ConfigBuilder::Model::Base)
+        # This is a subclass of Model::Base
+        superclass.model_attributes + @model_attributes
+      else
+        @model_attributes
+      end
+    end
+  end
 
   # Deserialize a hash into a configbuilder model
   #
@@ -82,18 +114,6 @@ class ConfigBuilder::Model::Base
     val = @attrs[identifier]
     unless val.nil?
       yield val
-    end
-  end
-
-  class << self
-
-    # @param identifier [Symbol]
-    def def_model_attribute(identifier)
-      model_attributes << identifier
-    end
-
-    def model_attributes
-      (@identifiers ||= [])
     end
   end
 end

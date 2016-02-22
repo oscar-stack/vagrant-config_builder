@@ -21,4 +21,33 @@ describe ConfigBuilder::Model::Base do
       expect(test_val_3).to be_nil
     end
   end
+
+  context 'when subclassed' do
+    let (:subclass_a) do
+      Class.new(described_class) do
+        def_model_attribute :attr_1
+        def_model_attribute :attr_2
+      end
+    end
+
+    subject { subclass_a }
+
+    it 'lists attributes via .model_attributes' do
+      expect(subject.model_attributes).to include(:attr_1, :attr_2)
+    end
+
+    context 'when subclassed further' do
+      let (:subclass_b) do
+        Class.new(subclass_a) do
+          def_model_attribute :attr_3
+        end
+      end
+
+      subject { subclass_b }
+
+      it 'lists inherited attributes via .model_attributes' do
+        expect(subject.model_attributes).to include(:attr_1, :attr_2, :attr_3)
+      end
+    end
+  end
 end

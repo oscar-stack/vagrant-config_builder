@@ -18,7 +18,6 @@ module ConfigBuilder
 
     module ClassMethods
       def def_model_delegator(identifier)
-        def_model_attribute(identifier)
         model_delegators << identifier
       end
 
