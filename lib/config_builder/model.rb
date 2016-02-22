@@ -39,6 +39,8 @@ module ConfigBuilder
         @registry.register(name, klass)
       end
 
+      require 'config_builder/model/provider/base'
+
       require 'config_builder/model/provider/virtualbox'
       require 'config_builder/model/provider/vmware'
       require 'config_builder/model/provider/vmware_fusion'
