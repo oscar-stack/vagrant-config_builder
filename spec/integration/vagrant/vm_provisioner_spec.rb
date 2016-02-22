@@ -1,0 +1,66 @@
+require 'spec_helper'
+
+describe 'Vagrant Integration: ConfigBuilder::Model::Provisioner' do
+  include_context 'vagrant-unit'
+
+  # Set inside test contexts to generate Vagrant configuration.
+  let(:config_data) { Hash.new }
+
+  let(:test_env)    { isolated_environment }
+  let(:env)         {
+    test_env.create_vagrant_env(local_data_path: "#{test_env.workdir}/.vagrant")
+  }
+  let(:root_config) { env.vagrantfile.config }
+
+  before(:each) do
+    model = ConfigBuilder::Model::Root.new_from_hash(config_data)
+
+    model.call(root_config)
+  end
+
+  context 'when building provisioners' do
+    let(:config_data) {
+      {'vms' =>
+        [
+          {
+            'name'             => 'test',
+            'provisioners'     => [
+              {'type' => 'shell'},
+              {'type' => 'file'},
+            ],
+          },
+        ]
+      }
+    }
+
+    subject { env.machine(:test, :dummy).config.vm }
+
+    it 'defines provisioners' do
+      expect(subject.provisioners).to have(2).items
+    end
+  end
+
+  context 'when configuring provisioners' do
+    let(:config_data) {
+      {'vms' =>
+        [
+          {
+            'name'             => 'test',
+            'provisioners'     => [
+              {'type' => 'shell', 'inline' => 'hello world'},
+            ],
+          },
+        ]
+      }
+    }
+
+    subject { env.machine(:test, :dummy).config.vm }
+
+    it 'sets provisioner attributes' do
+      shell_config = subject.provisioners.first.config
+
+      expect(shell_config.inline).to eq 'hello world'
+    end
+  end
+
+end
