@@ -200,4 +200,29 @@ class ConfigBuilder::Model::Base
 
     result
   end
+
+  # Copy attributes to a Vagrant configuration object
+  #
+  # This method iterates over each attribute defined via
+  # #{.def_model_attribute} and copies data to a Vagrant configuration object.
+  # By default, `config.attributename = value` is used. To provide custom
+  # behavior, define a `configure_attributename` method. This method will be
+  # passed the vagrant configuration object and the attribute value.
+  #
+  # @param [Vagrant.plugin('2', :config)] A Vagrant configuration object.
+  #
+  # @since 0.16.0
+  #
+  # @return [void]
+  def configure!(config)
+    self.class.model_attributes.each do |id|
+      if self.respond_to?("configure_#{id}")
+        # Call custom configuration method if defined.
+        with_attr(id) {|val| send("configure_#{id}", config, val)}
+      else
+        # 99% of the time, it's just config.thing = val
+        with_attr(id) {|val| config.send("#{id}=", val)}
+      end
+    end
+  end
 end

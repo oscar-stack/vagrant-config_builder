@@ -32,6 +32,10 @@ describe ConfigBuilder::Model::Base do
 
         def_model_option :opt_1
         def_model_option :opt_2
+
+        def configure_attr_2(config, value)
+          config.custom_setter(value)
+        end
       end
     end
 
@@ -59,6 +63,24 @@ describe ConfigBuilder::Model::Base do
       instance = subject.new_from_hash({'opt_1' => 'option_value'})
 
       expect(instance.instance_options).to eq({:opt_1 => 'option_value'})
+    end
+
+    it 'copies attributes to config objects with #configure!' do
+      config = double('vagrant config')
+      instance = subject.new_from_hash({'attr_1' => 'attr_value'})
+
+      expect(config).to receive("attr_1=").with('attr_value')
+
+      instance.configure!(config)
+    end
+
+    it 'uses custom setters to copy attributes with #configure!' do
+      config = double('vagrant config')
+      instance = subject.new_from_hash({'attr_2' => 'custom_value'})
+
+      expect(config).to receive("custom_setter").with('custom_value')
+
+      instance.configure!(config)
     end
 
     context 'when subclassed further' do
