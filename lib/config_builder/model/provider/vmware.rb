@@ -1,5 +1,5 @@
 # @see http://docs.vagrantup.com/v2/vmware/configuration.html
-class ConfigBuilder::Model::Provider::VMware < ConfigBuilder::Model::Base
+class ConfigBuilder::Model::Provider::VMware < ConfigBuilder::Model::Provider::Base
 
   # @!attribute [rw] vmx
   #   @return [Hash<String, String>] A hash of VMX options for the given VM
@@ -26,11 +26,13 @@ class ConfigBuilder::Model::Provider::VMware < ConfigBuilder::Model::Base
   def to_proc
     Proc.new do |vm_config|
       @providers.each do |vmware_provider|
-        vm_config.provider vmware_provider do |config|
-          config.gui = attr(:gui)
+        vm_config.provider vmware_provider do |provider, override|
+          provider.gui = attr(:gui)
           attr(:vmx).each_pair do |key, value|
-            config.vmx[key] = value
+            provider.vmx[key] = value
           end
+
+          eval_models([provider, override])
         end
       end
     end
