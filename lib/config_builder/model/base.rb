@@ -75,6 +75,41 @@ class ConfigBuilder::Model::Base
         @model_attributes
       end
     end
+
+    # Define a new model option
+    #
+    # Model options are used when building new Vagrant objects.
+    #
+    # @param identifier [Symbol]
+    #
+    # @since 0.16.0
+    #
+    # @return [Symbol] The identifier passed to `def_model_option`.
+    def def_model_option(identifier)
+      @model_options ||= []
+
+      @model_options << identifier
+
+      identifier
+    end
+
+    # Return all options defined for this model
+    #
+    # This method also returns inherited options.
+    #
+    # @since 0.16.0
+    #
+    # @return [Array<Symbol>] A list of model options.
+    def model_options
+      @model_options ||= []
+
+      if (self < ::ConfigBuilder::Model::Base)
+        # This is a subclass of Model::Base
+        superclass.model_options + @model_options
+      else
+        @model_options
+      end
+    end
   end
 
   # Deserialize a hash into a configbuilder model
@@ -145,5 +180,24 @@ class ConfigBuilder::Model::Base
   # @return [Object]
   def instance_id
     attr(self.class.model_id)
+  end
+
+  # Return a hash of all options which have been given a value
+  #
+  # This method returns a hash of options and their values. Options that were
+  # not present in the data used to create a model instance will not be
+  # returned.
+  #
+  # @since 0.16.0
+  #
+  # @return [Hash]
+  def instance_options
+    result = Hash.new
+
+    self.class.model_options.each do |id|
+      with_attr(id) {|val| result[id] = val}
+    end
+
+    result
   end
 end

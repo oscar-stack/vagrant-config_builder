@@ -29,6 +29,9 @@ describe ConfigBuilder::Model::Base do
 
         def_model_attribute :attr_1
         def_model_attribute :attr_2
+
+        def_model_option :opt_1
+        def_model_option :opt_2
       end
     end
 
@@ -42,16 +45,28 @@ describe ConfigBuilder::Model::Base do
       expect(subject.model_attributes).to include(:attr_1, :attr_2)
     end
 
+    it 'lists options via .model_options' do
+      expect(subject.model_options).to include(:opt_1, :opt_2)
+    end
+
     it 'returns #instance_id by using .model_id' do
       instance = subject.new_from_hash({'id_key' => 'id_value'})
 
       expect(instance.instance_id).to eq 'id_value'
     end
 
+    it 'returns all set options via #instance_options' do
+      instance = subject.new_from_hash({'opt_1' => 'option_value'})
+
+      expect(instance.instance_options).to eq({:opt_1 => 'option_value'})
+    end
+
     context 'when subclassed further' do
       let (:subclass_b) do
         Class.new(subclass_a) do
           def_model_attribute :attr_3
+
+          def_model_option :opt_3
         end
       end
 
@@ -59,6 +74,10 @@ describe ConfigBuilder::Model::Base do
 
       it 'lists inherited attributes via .model_attributes' do
         expect(subject.model_attributes).to include(:attr_1, :attr_2, :attr_3)
+      end
+
+      it 'lists inherited options via .model_options' do
+        expect(subject.model_options).to include(:opt_1, :opt_2, :opt_3)
       end
 
       it 'does not inherit model_id' do
