@@ -13,3 +13,7 @@ en:
       vm:
         provider_is_deprecated: |-
           The provider attribute, set on vm %{name}, is deprecated and will be removed in an upcoming release. Use the providers attribute instead.
+    model_delegator:
+      is_deprecated: |-
+        The functionality provided by ConfigBuilder::ModelDelegator has been folded into Config::Builder::Model::Base.
+        The ModelDelegator module will be removed in an upcoming release (included by %{name}).

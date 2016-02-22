@@ -1,8 +1,5 @@
 # @see https://github.com/audiolize/vagrant-softlayer
 class ConfigBuilder::Model::Provider::SoftLayer < ConfigBuilder::Model::Base
-
-  include ConfigBuilder::ModelDelegator
-
   def_model_attribute :api_key
   def_model_attribute :endpoint_url
   def_model_attribute :username

@@ -1,6 +1,5 @@
 require 'vagrant/errors'
 require 'config_builder/class_registry'
-require 'config_builder/model_delegator'
 
 module ConfigBuilder
 

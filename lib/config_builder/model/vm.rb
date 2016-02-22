@@ -1,8 +1,5 @@
 # @see http://docs.vagrantup.com/v2/vagrantfile/machine_settings.html
 class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
-
-  include ConfigBuilder::ModelDelegator
-
   # @!attribute [rw] provider
   #   @return [Hash<Symbol, Object>] The provider configuration for
   #     this VM

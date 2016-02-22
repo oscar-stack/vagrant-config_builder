@@ -33,6 +33,8 @@ describe ConfigBuilder::Model::Base do
         def_model_option :opt_1
         def_model_option :opt_2
 
+        def_model_delegator :delegator_1
+
         def configure_attr_2(config, value)
           config.custom_setter(value)
         end
@@ -51,6 +53,10 @@ describe ConfigBuilder::Model::Base do
 
     it 'lists options via .model_options' do
       expect(subject.model_options).to include(:opt_1, :opt_2)
+    end
+
+    it 'lists delegators via .model_delegators' do
+      expect(subject.model_delegators).to include(:delegator_1)
     end
 
     it 'returns #instance_id by using .model_id' do
@@ -88,6 +94,8 @@ describe ConfigBuilder::Model::Base do
         Class.new(subclass_a) do
           def_model_attribute :attr_3
 
+          def_model_delegator :delegator_2
+
           def_model_option :opt_3
         end
       end
@@ -100,6 +108,10 @@ describe ConfigBuilder::Model::Base do
 
       it 'lists inherited options via .model_options' do
         expect(subject.model_options).to include(:opt_1, :opt_2, :opt_3)
+      end
+
+      it 'lists inherited delegators via .model_delegators' do
+        expect(subject.model_delegators).to include(:delegator_1, :delegator_2)
       end
 
       it 'does not inherit model_id' do

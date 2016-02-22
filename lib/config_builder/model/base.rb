@@ -110,6 +110,42 @@ class ConfigBuilder::Model::Base
         @model_options
       end
     end
+
+    # Define a new model delegator
+    #
+    # Model delegators are used to hand configuration tasks off to other model
+    # classes.
+    #
+    # @param identifier [Symbol]
+    #
+    # @since 0.16.0
+    #
+    # @return [Symbol] The identifier passed to `def_model_delegator`.
+    def def_model_delegator(identifier)
+      @model_delegators ||= []
+
+      @model_delegators << identifier
+
+      identifier
+    end
+
+    # Return all delegators defined for this model
+    #
+    # This method also returns inherited delegators.
+    #
+    # @since 0.16.0
+    #
+    # @return [Array<Symbol>] A list of model delegators.
+    def model_delegators
+      @model_delegators ||= []
+
+      if (self < ::ConfigBuilder::Model::Base)
+        # This is a subclass of Model::Base
+        superclass.model_delegators + @model_delegators
+      else
+        @model_delegators
+      end
+    end
   end
 
   # Deserialize a hash into a configbuilder model
@@ -170,6 +206,17 @@ class ConfigBuilder::Model::Base
     val = @attrs[identifier]
     unless val.nil?
       yield val
+    end
+  end
+
+  def model_delegators
+    self.class.model_delegators
+  end
+
+  def eval_models(config)
+    model_delegators.each do |model|
+      meth = "eval_#{model}"
+      self.send(meth, config)
     end
   end
 

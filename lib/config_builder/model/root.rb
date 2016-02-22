@@ -2,9 +2,6 @@
 #
 # @see http://docs.vagrantup.com/v2/vagrantfile/index.html
 class ConfigBuilder::Model::Root < ConfigBuilder::Model::Base
-
-  include ConfigBuilder::ModelDelegator
-
   def_model_delegator :vagrant
   def_model_delegator :vms
   def_model_delegator :vm_defaults
