@@ -24,6 +24,27 @@
 # but it makes life easier.
 class ConfigBuilder::Model::Base
   class << self
+    # Define the model identifier
+    #
+    # This method defines an entry in the data structure which is to be used as
+    # an identifier for generated model instances.
+    #
+    # @since 0.16.0
+    #
+    # @param identifier [Symbol]
+    #
+    # @return [Symbol] The identifier passed to `def_model_id`.
+    def def_model_id(identifier)
+      @model_id = identifier
+    end
+
+    # Fetch the model identifier
+    #
+    # @since 0.16.0
+    #
+    # @return [Symbol] The identifier defined using #{def_model_id}.
+    attr_reader :model_id
+
     # Define a new model attribute
     #
     # Model attributes are used to configure Vagrant objects.
@@ -115,5 +136,14 @@ class ConfigBuilder::Model::Base
     unless val.nil?
       yield val
     end
+  end
+
+  # Return the identifier value for this model instance
+  #
+  # @since 0.16.0
+  #
+  # @return [Object]
+  def instance_id
+    attr(self.class.model_id)
   end
 end

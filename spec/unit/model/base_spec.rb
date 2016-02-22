@@ -25,6 +25,8 @@ describe ConfigBuilder::Model::Base do
   context 'when subclassed' do
     let (:subclass_a) do
       Class.new(described_class) do
+        def_model_id :id_key
+
         def_model_attribute :attr_1
         def_model_attribute :attr_2
       end
@@ -32,8 +34,18 @@ describe ConfigBuilder::Model::Base do
 
     subject { subclass_a }
 
+    it 'responds to .model_id' do
+      expect(subject.model_id).to eq :id_key
+    end
+
     it 'lists attributes via .model_attributes' do
       expect(subject.model_attributes).to include(:attr_1, :attr_2)
+    end
+
+    it 'returns #instance_id by using .model_id' do
+      instance = subject.new_from_hash({'id_key' => 'id_value'})
+
+      expect(instance.instance_id).to eq 'id_value'
     end
 
     context 'when subclassed further' do
@@ -47,6 +59,10 @@ describe ConfigBuilder::Model::Base do
 
       it 'lists inherited attributes via .model_attributes' do
         expect(subject.model_attributes).to include(:attr_1, :attr_2, :attr_3)
+      end
+
+      it 'does not inherit model_id' do
+        expect(subject.model_id).to be_nil
       end
     end
   end
