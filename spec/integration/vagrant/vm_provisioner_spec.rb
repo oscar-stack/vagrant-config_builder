@@ -25,8 +25,8 @@ describe 'Vagrant Integration: ConfigBuilder::Model::Provisioner' do
           {
             'name'             => 'test',
             'provisioners'     => [
-              {'type' => 'shell'},
-              {'type' => 'file'},
+              {'type' => 'shell', 'run' => 'once'},
+              {'type' => 'file', 'name' => 'supercoolfile'},
             ],
           },
         ]
@@ -37,6 +37,30 @@ describe 'Vagrant Integration: ConfigBuilder::Model::Provisioner' do
 
     it 'defines provisioners' do
       expect(subject.provisioners).to have(2).items
+    end
+
+    it 'sets provisioner names' do
+      if Vagrant::VERSION < '1.7'
+        provisioner = subject.provisioners.find {|p| p.name == :file}
+
+        expect(provisioner.id).to eq 'supercoolfile'
+      else
+        provisioner = subject.provisioners.find {|p| p.type == :file}
+
+        expect(provisioner.name).to eq :supercoolfile
+      end
+    end
+
+    it 'sets provisioner options' do
+      if Vagrant::VERSION < '1.7'
+        provisioner = subject.provisioners.find {|p| p.name == :shell}
+
+        expect(provisioner.run).to eq :once
+      else
+        provisioner = subject.provisioners.find {|p| p.type == :shell}
+
+        expect(provisioner.run).to eq :once
+      end
     end
   end
 
