@@ -66,6 +66,8 @@ module ConfigBuilder
         @registry.register(name, klass)
       end
 
+      require 'config_builder/model/provisioner/base'
+
       require 'config_builder/model/provisioner/file'
       require 'config_builder/model/provisioner/shell'
       require 'config_builder/model/provisioner/puppet'
