@@ -1,5 +1,5 @@
 # @see http://docs.vagrantup.com/v2/provisioning/file.html
-class ConfigBuilder::Model::Provisioner::File < ConfigBuilder::Model::Base
+class ConfigBuilder::Model::Provisioner::File < ConfigBuilder::Model::Provisioner::Base
   # @!attribute [rw] source
   #   @return [Source] Is the local path of the file to be uploaded.
   def_model_attribute :source
@@ -10,15 +10,6 @@ class ConfigBuilder::Model::Provisioner::File < ConfigBuilder::Model::Base
   #     this location must be writable to that user. The SSH user can be
   #     determined by running vagrant ssh-config, and defaults to "vagrant".
   def_model_attribute :destination
-
-  def to_proc
-    Proc.new do |vm_config|
-      vm_config.provision :file do |file_config|
-        with_attr(:source)        { |val| file_config.source = val }
-        with_attr(:destination)   { |val| file_config.destination = val }
-      end
-    end
-  end
 
   ConfigBuilder::Model::Provisioner.register('file', self)
 end
