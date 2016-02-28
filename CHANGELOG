@@ -1,6 +1,50 @@
 CHANGELOG
 =========
 
+1.0.0
+-----
+
+(unreleased)
+
+This is a major feature release with small breaks in backwards compatibility.
+
+  * (GH-48) Add support for the create, group and owner synced_folder options.
+
+  * (GH-50) Add support for vagrant-openstack-provider and
+    vagrant-openstack-plugin.
+
+  * (GH-51) Add support for the vagrant-softlayer provider.
+
+  * (GH-52) Support for new Vagrant 1.8.1 features and a sweeping refresh of
+    just about every data model to ensure most Vagrant configuration options are
+    supported.
+
+  * (GH-53) Models now require much, much less boilerplate. In most cases, a
+    a class that inherits form Model::Base and uses def_model_attribute will
+    Do The Right Thing™ without requiring further code.
+
+  * (GH-46) All provider models inheriting from Model::Provider::Base now
+    support provider-specific overrides. All core provider models have been
+    refactored to use this base class.
+
+  * ModelDelegator functionality has been moved to Model::Base to support
+    (GH-46). The ModelDelegator module still exists but is deprecated and does
+    nothing.
+
+  * (GH-40) All provisioner models inheriting from Model::Provisioner::Base now
+    support provisioner-specific options such as name and run. All core
+    provisioner models have been refactored to use this base class.
+
+  * BREAK: The name attribute of the shell provisioner has been re-purposed to
+    support named provisioners in (GH-40).
+
+  * There is now an integration suite that tests whether config_builder
+    correctly transforms data into Vagrant objects.
+
+Many thanks to Brett Delle Grazie and Christoph Fiehe for their contributions
+to this release.
+
+
 0.15.1
 ------
 
