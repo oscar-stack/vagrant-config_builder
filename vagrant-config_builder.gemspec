@@ -7,9 +7,9 @@ Gem::Specification.new do |gem|
 
   gem.summary     = 'Generate Vagrant configurations from arbitrary data'
 
-  gem.authors  = 'Adrien Thebo'
-  gem.email    = 'adrien@somethingsinistral.net'
-  gem.homepage = 'https://github.com/adrienthebo/vagrant-config_builder'
+  gem.authors  = ['Adrien Thebo', 'Charlie Sharpsteen']
+  gem.email    = ['adrien@somethingsinistral.net', 'source@sharpsteen.net']
+  gem.homepage = 'https://github.com/oscar-stack/vagrant-config_builder'
 
   gem.has_rdoc = true
   gem.license  = 'Apache 2.0'
@@ -17,9 +17,9 @@ Gem::Specification.new do |gem|
   gem.files        = %x{git ls-files -z}.split("\0")
   gem.require_path = 'lib'
 
-  gem.add_runtime_dependency 'rake', '>= 0'
   gem.add_runtime_dependency 'deep_merge', '~> 1.0.0'
 
-  # Pin to 2.14.x for compatibility with vagrant-spec.
+  # Pinned for compatibility with vagrant-spec.
+  gem.add_development_dependency 'rake', '~> 10.0'
   gem.add_development_dependency 'rspec', '~> 2.14.0'
 end
