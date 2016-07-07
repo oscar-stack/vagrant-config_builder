@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+1.1.0
+-----
+
+2016-07-07
+
+This is a backwards compatible feature release.
+
+  * (GH-55) Add support for the DigitalOcean provider.
+
+Many thanks to Peter Souter for their contributions to this release.
+
+
 1.0.0
 -----
 
