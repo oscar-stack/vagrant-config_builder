@@ -14,6 +14,12 @@ class ConfigBuilder::Model::Provider::Openstack < ConfigBuilder::Model::Provider
   def_model_attribute :openstack_orchestration_url
   def_model_attribute :endpoint_type
 
+  # Keystone v3 Credentials
+  def_model_attribute :identity_api_version
+  def_model_attribute :domain_name
+  def_model_attribute :project_name
+  def_model_attribute :interface_type
+
   # VM Configuration
   def_model_attribute :server_name
   def_model_attribute :flavor
