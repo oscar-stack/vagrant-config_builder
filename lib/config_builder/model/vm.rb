@@ -93,6 +93,12 @@ class ConfigBuilder::Model::VM < ConfigBuilder::Model::Base
   #   start.
   def_model_option :autostart
 
+  # @!attribute [rw] primary
+  #   @return [Boolean] If true, the box will be the default machine used when
+  #   a specific machine in a multi-machine environment is not specified.
+  #   If false, vagrant must be given the box name explicitly for some commands.
+  def_model_option :primary
+
   # @!attribute [rw] allowed_synced_folder_types
   #   @return [Array<String>]
   def_model_attribute :allowed_synced_folder_types

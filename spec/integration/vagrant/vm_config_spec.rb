@@ -22,7 +22,7 @@ describe 'Vagrant Integration: ConfigBuilder::Model::VM' do
     let(:config_data) {
       {'vms' =>
         [
-          {'name' => 'machine1'},
+          {'name' => 'machine1', 'primary' => true},
           {'name' => 'machine2', 'autostart' => false},
         ]
       }
@@ -38,6 +38,12 @@ describe 'Vagrant Integration: ConfigBuilder::Model::VM' do
       test_vm = subject.defined_vms[:machine2]
 
       expect(test_vm.options[:autostart]).to be_false
+    end
+
+    it 'sets the primary option when defining machines' do
+      test_vm = subject.defined_vms[:machine1]
+
+      expect(test_vm.options[:primary]).to be_true
     end
   end
 
