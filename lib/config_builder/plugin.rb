@@ -14,7 +14,7 @@ module VagrantPlugins
       # Internal action hooks
       action_hook('Vagrant Config Builder: vagrant version check', :environment_load) do |hook|
         require 'config_builder/action/version_check'
-        hook.prepend ConfigBuilder::Action::VersionCheck
+        hook.prepend(::ConfigBuilder::Action::VersionCheck)
       end
     end
   end
