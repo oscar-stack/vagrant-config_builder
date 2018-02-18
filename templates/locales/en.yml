@@ -1,6 +1,12 @@
 ---
 en:
   config_builder:
+    action:
+      version_check:
+        deprecated_vagrant_version: |-
+          The vagrant-hosts plugin has deprecated support for Vagrant
+          versions older than %{minimum_version}. Support for version %{vagrant_version}
+          will be removed in the next major release of the plugin.
     class_registry:
       unknown_entry: |-
         Unable to locate a class associated with the identifier %{identifier} in the registry
