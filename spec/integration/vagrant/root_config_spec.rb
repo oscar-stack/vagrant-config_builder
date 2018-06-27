@@ -30,7 +30,7 @@ describe 'Vagrant Integration: ConfigBuilder::Model::Root' do
     subject { root_config.ssh }
 
     it 'sets Vagrant config.ssh parameters' do
-      expect(subject.insert_key).to be_false
+      expect(subject.insert_key).to be_falsey
       expect(subject.username).to eq 'AzureDiamond'
       expect(subject.password).to eq 'hunter2'
     end

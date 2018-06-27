@@ -69,7 +69,7 @@ roles:
       end
 
       it 'concatenates subarrays' do
-        expect(config['roles']['base']['private_networks']).to have(2).items
+        expect(config['roles']['base']['private_networks'].length).to eq(2)
       end
     end
   end

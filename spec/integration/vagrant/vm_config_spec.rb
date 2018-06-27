@@ -37,13 +37,13 @@ describe 'Vagrant Integration: ConfigBuilder::Model::VM' do
     it 'sets the autostart option when defining machines' do
       test_vm = subject.defined_vms[:machine2]
 
-      expect(test_vm.options[:autostart]).to be_false
+      expect(test_vm.options[:autostart]).to be_falsey
     end
 
     it 'sets the primary option when defining machines' do
       test_vm = subject.defined_vms[:machine1]
 
-      expect(test_vm.options[:primary]).to be_true
+      expect(test_vm.options[:primary]).to be_truthy
     end
   end
 
@@ -88,7 +88,7 @@ describe 'Vagrant Integration: ConfigBuilder::Model::VM' do
     end
 
     it 'configures Vagrant synced folders' do
-      expect(subject.synced_folders['/vagrant'][:disabled]).to be_true
+      expect(subject.synced_folders['/vagrant'][:disabled]).to be_truthy
     end
 
     it 'configures Vagrant private networks' do

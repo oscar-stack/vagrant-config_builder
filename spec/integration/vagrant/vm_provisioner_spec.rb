@@ -36,7 +36,7 @@ describe 'Vagrant Integration: ConfigBuilder::Model::Provisioner' do
     subject { env.machine(:test, :dummy).config.vm }
 
     it 'defines provisioners' do
-      expect(subject.provisioners).to have(2).items
+      expect(subject.provisioners.length).to eq(2)
     end
 
     it 'sets provisioner names' do
