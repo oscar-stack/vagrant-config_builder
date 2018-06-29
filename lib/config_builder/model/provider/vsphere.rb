@@ -27,12 +27,6 @@ class ConfigBuilder::Model::Provider::Vsphere< ConfigBuilder::Model::Provider::B
 
   def_model_attribute :custom_attributes
 
-  def initialize
-    @defaults = {
-      :insecure => false,
-    }
-  end
-
   def instance_id
     'vsphere'
   end
