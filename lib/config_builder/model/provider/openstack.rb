@@ -75,6 +75,17 @@ class ConfigBuilder::Model::Provider::Openstack < ConfigBuilder::Model::Provider
   def_model_attribute :http
   def_model_attribute :floating_ip_assign_timeout
 
+  @@patch_applied = false
+
+  def initialize
+    unless @@patch_applied
+      require 'vagrant-openstack-provider/config'
+      # FIXME: YAY MONKEYPATCHING
+      ::VagrantPlugins::Openstack::Config.prepend(OpenStackConfigPatch)
+      @@patch_applied = true
+    end
+  end
+
   def instance_id
     'openstack'
   end
@@ -99,4 +110,27 @@ class ConfigBuilder::Model::Provider::Openstack < ConfigBuilder::Model::Provider
   end
 
   ConfigBuilder::Model::Provider.register('openstack', self)
+
+  # FIXME: PR this change to vagrant-openstack-provider. If a PR is not
+  #        accepted, then update the role filter to merge all provider hashes
+  #        into a single configuration block per-vm so that we don't have to
+  #        worry about how providers feel or don't feel about the subject of
+  #        merging.
+  module OpenStackConfigPatch
+    # A patch for the merge behavior of OpenStack::Config instances that
+    # allows us to merge volume boot settings together. Unpatched OpenStack
+    # just discards its current config and accepts whatever the new config is.
+    # In our case this would be a fragment of a complete volume_boot setting.
+    def merge(other)
+      result = super(other)
+      # Could be UNSET_VALUE or nil
+      current_config = self.volume_boot.is_a?(Hash) ? self.volume_boot : {}
+      new_config = other.volume_boot.is_a?(Hash) ? other.volume_boot : {}
+
+      return result if (current_config.empty? && new_config.empty?)
+
+      result.instance_variable_set(:@volume_boot, current_config.merge(new_config))
+      result
+    end
+  end
 end
