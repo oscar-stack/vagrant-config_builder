@@ -13,12 +13,16 @@ class ConfigBuilder::Model::Provider::Openstack < ConfigBuilder::Model::Provider
   def_model_attribute :openstack_image_url
   def_model_attribute :openstack_orchestration_url
   def_model_attribute :endpoint_type
+  def_model_attribute :ssl_ca_file
+  def_model_attribute :ssl_verify_peer
 
   # Keystone v3 Credentials
   def_model_attribute :identity_api_version
   def_model_attribute :domain_name
   def_model_attribute :project_name
+  def_model_attribute :project_domain_name
   def_model_attribute :interface_type
+  def_model_attribute :user_domain_name
 
   # VM Configuration
   def_model_attribute :server_name
@@ -28,7 +32,9 @@ class ConfigBuilder::Model::Provider::Openstack < ConfigBuilder::Model::Provider
   def_model_attribute :security_groups
   def_model_attribute :user_data
   def_model_attribute :metadata
+  def_model_attribute :meta_args_support
   def_model_attribute :scheduler_hints
+  def_model_attribute :use_legacy_synced_folders
 
   # Floating IPs
   def_model_attribute :floating_ip
@@ -66,6 +72,7 @@ class ConfigBuilder::Model::Provider::Openstack < ConfigBuilder::Model::Provider
   def_model_attribute :server_delete_timeout
   def_model_attribute :http_open_timeout
   def_model_attribute :http_read_timeout
+  def_model_attribute :floating_ip_assign_timeout
 
   def instance_id
     'openstack'
