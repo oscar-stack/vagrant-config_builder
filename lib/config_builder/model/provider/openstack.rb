@@ -70,12 +70,25 @@ class ConfigBuilder::Model::Provider::Openstack < ConfigBuilder::Model::Provider
   def_model_attribute :server_active_timeout
   def_model_attribute :server_stop_timeout
   def_model_attribute :server_delete_timeout
-  def_model_attribute :http_open_timeout
-  def_model_attribute :http_read_timeout
+  def_model_attribute :http
   def_model_attribute :floating_ip_assign_timeout
 
   def instance_id
     'openstack'
+  end
+
+  # @private
+  def configure_http(config, val)
+    val.each do |k, v|
+      case k.to_sym
+      when :open_timeout
+        config.http.open_timeout = val
+      when :read_timeout
+        config.http.read_timeout = val
+      when :proxy
+        config.http.proxy = val
+      end
+    end
   end
 
   ConfigBuilder::Model::Provider.register('openstack', self)
