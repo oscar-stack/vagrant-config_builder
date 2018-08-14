@@ -1,3 +1,5 @@
+require 'config_builder/util'
+
 # @see https://github.com/ggiamarchi/vagrant-openstack-provider
 class ConfigBuilder::Model::Provider::Openstack < ConfigBuilder::Model::Provider::Base
 
@@ -89,6 +91,11 @@ class ConfigBuilder::Model::Provider::Openstack < ConfigBuilder::Model::Provider
         config.http.proxy = val
       end
     end
+  end
+
+  # @private
+  def configure_volume_boot(config, val)
+    config.volume_boot = ConfigBuilder::Util.symbolize(val)
   end
 
   ConfigBuilder::Model::Provider.register('openstack', self)
