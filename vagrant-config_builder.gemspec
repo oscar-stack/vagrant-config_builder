@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
   gem.files        = %x{git ls-files -z}.split("\0")
   gem.require_path = 'lib'
 
-  gem.add_runtime_dependency 'deep_merge', '~> 1.0.0'
+  gem.add_runtime_dependency 'deep_merge', '~> 1.0'
 
   # Pinned for compatibility with vagrant-spec.
   gem.add_development_dependency 'rake', '~> 10.0'
