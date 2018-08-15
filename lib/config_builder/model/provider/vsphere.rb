@@ -24,8 +24,13 @@ class ConfigBuilder::Model::Provider::Vsphere< ConfigBuilder::Model::Provider::B
   def_model_attribute :cpu_count
   def_model_attribute :cpu_reservation
   def_model_attribute :mem_reservation
+  def_model_attribute :real_nic_ip
+  def_model_attribute :ip_address_timeout
+  def_model_attribute :wait_for_sysprep
 
   def_model_attribute :custom_attributes
+  def_model_attribute :extra_config
+  def_model_attribute :notes
 
   def instance_id
     'vsphere'
