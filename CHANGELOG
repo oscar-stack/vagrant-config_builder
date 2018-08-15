@@ -1,6 +1,28 @@
 CHANGELOG
 =========
 
+1.3.0
+-----
+
+2018-08-15
+
+This is a backwards compatible feature release.
+
+  * Added test coverage for Vagrant 1.9, 2.0, and 2.1
+
+  * Deprecated support for vagrant versions earlier than 1.8. These will be
+    removed in the next major release.
+
+  * Synced OpenStack provider options with vagrant-openstack-provider 0.13.0.
+
+  * Synced OpenStack volume_boot option is patched suport merging of multiple
+    configuration blocks.
+
+  * Synced vSphere provider options with vagrant-vsphere 1.13.2.
+
+  * Synced core Vagrant options with Vagrant 2.1.2.
+
+
 1.2.0
 -----
 
