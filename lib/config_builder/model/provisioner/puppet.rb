@@ -43,6 +43,10 @@ class ConfigBuilder::Model::Provisioner::Puppet < ConfigBuilder::Model::Provisio
   #   @return [String] Path to the directory that contains environment files on the host disk.
   def_model_attribute :environment_path
 
+  # @!attribute [rw] environment_variables
+  #   @return [Hash]
+  def_model_attribute :environment_variables
+
   # @!attribute [rw] synced_folder_type
   #   @return [String] The type of synced folders to use when sharing the data required for the provisioner to work properly.
   def_model_attribute :synced_folder_type

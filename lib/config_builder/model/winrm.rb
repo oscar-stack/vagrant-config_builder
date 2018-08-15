@@ -2,6 +2,14 @@
 #
 # @see http://docs.vagrantup.com/v2/vagrantfile
 class ConfigBuilder::Model::WinRM < ConfigBuilder::Model::Base
+  # @!attribute [rw] basic_auth_only
+  #   @return [Boolean]
+  def_model_attribute :basic_auth_only
+
+  # @!attribute [rw] codepage
+  #   @return [String]
+  def_model_attribute :codepage
+
   # @!attribute [rw] username
   #   @return [String] This sets the username that Vagrant will WinRM as by
   #     default. Providers are free to override this if they detect a more

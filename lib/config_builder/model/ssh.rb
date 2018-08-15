@@ -2,6 +2,10 @@
 #
 # @see http://docs.vagrantup.com/v2/vagrantfile/ssh_settings.html
 class ConfigBuilder::Model::SSH < ConfigBuilder::Model::Base
+  # @!attribute [rw] export_command_template
+  #   @return [String]
+  def_model_attribute :export_command_template
+
   # @!attribute [rw] username
   #   @return [String] This sets the username that Vagrant will SSH as by
   #     default. Providers are free to override this if they detect a more
@@ -103,6 +107,10 @@ class ConfigBuilder::Model::SSH < ConfigBuilder::Model::Base
   #     This defaults to `sudo -E -H %c`. The `%c` will be replaced by the
   #     command that is being executed.
   def_model_attribute :sudo_command
+
+  # @!attribute [rw] ssh_command
+  #   @return [String]
+  def_model_attribute :ssh_command
 
   def to_proc
     Proc.new do |global_config|

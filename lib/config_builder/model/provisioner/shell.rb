@@ -41,5 +41,17 @@ class ConfigBuilder::Model::Provisioner::Shell < ConfigBuilder::Model::Provision
   #   @return [Boolean] Whether to run an elevated script in interactive mode on Windows.
   def_model_attribute :powershell_elevated_interactive
 
+  # @!attribute [rw] md5
+  #   @return [String]
+  def_model_attribute :md5
+
+  # @!attribute [rw] sha1
+  #   @return [String]
+  def_model_attribute :sha1
+
+  # @!attribute [rw] sensitive
+  #   @return [Boolean]
+  def_model_attribute :sensitive
+
   ConfigBuilder::Model::Provisioner.register('shell', self)
 end
