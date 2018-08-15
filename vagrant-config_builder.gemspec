@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.homepage = 'https://github.com/oscar-stack/vagrant-config_builder'
 
   gem.has_rdoc = true
-  gem.license  = 'Apache 2.0'
+  gem.license  = 'Apache-2.0'
 
   gem.files        = %x{git ls-files -z}.split("\0")
   gem.require_path = 'lib'
